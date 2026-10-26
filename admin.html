@@ -31,7 +31,7 @@ td{padding:14px 16px;border-top:1px solid #f0ebe0;font-weight:600;font-size:.93r
 .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e6dfd0;gap:16px}.row span{color:var(--mut)}.row b{text-align:left}
 .ln{display:flex;justify-content:space-between;padding:8px 0;font-size:.92rem}
 </style></head><body>
-<div class="lock" id="lk"><div class="lb"><img id="lo" alt=""><h2 style="margin-bottom:6px">لوحة الطلبات</h2><p style="color:var(--mut);margin-bottom:18px">أدخل كلمة المرور للدخول</p><input type="email" id="ae" placeholder="البريد الإلكتروني" style="margin-bottom:10px;display:none"><input type="password" id="pw" placeholder="كلمة المرور"><button class="bt" style="width:100%;margin-top:12px" id="go">دخول</button><p id="er" style="color:#c0392b;margin-top:10px;font-weight:700"></p></div></div>
+<div class="lock" id="lk"><div class="lb"><img id="lo" alt=""><h2 style="margin-bottom:6px">لوحة الطلبات</h2><p style="color:var(--mut);margin-bottom:18px">أدخل كلمة المرور للدخول</p><input type="password" id="pw" placeholder="كلمة المرور"><button class="bt" style="width:100%;margin-top:12px" id="go">دخول</button><p id="er" style="color:#c0392b;margin-top:10px;font-weight:700"></p></div></div>
 <div class="wrap" id="wr"><div class="top"><h1>درج <i>و</i> رف · الطلبات</h1><div><button class="bt s" id="ex">تصدير CSV</button><button class="bt s" id="rf">تحديث</button><button class="bt s" id="out">خروج</button></div></div>
 <main><div class="st" id="st"></div><div class="tb"><input id="q" placeholder="ابحث بالاسم أو الموبايل أو رقم الطلب..."><select id="fs"><option value="">كل الحالات</option></select></div>
 <div class="tw"><table><thead><tr><th>رقم الطلب</th><th>العميل</th><th>الموبايل</th><th>المحافظة / المنطقة</th><th>الإجمالي</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody id="tb"></tbody></table><div class="empty" id="em">لا توجد طلبات بعد</div></div></main></div>
@@ -41,11 +41,12 @@ td{padding:14px 16px;border-top:1px solid #f0ebe0;font-weight:600;font-size:.93r
 var $=function(i){return document.getElementById(i)},ST=["جديد","قيد التجهيز","تم الشحن","تم التسليم","ملغي"],CL={"جديد":"#e37434","قيد التجهيز":"#25b3b0","تم الشحن":"#007979","تم التسليم":"#2e8b57","ملغي":"#9aa5a4"};
 $("lo").src=DR.LOGO;$("lo").onerror=function(){this.remove()};
 ST.forEach(function(s){$("fs").insertAdjacentHTML("beforeend","<option>"+s+"</option>")});
-var isA=function(){var s=DR.sess();return s&&s.email==String(DR.SB.ADMIN_EMAIL).toLowerCase()};if(DR.cloud())$("ae").style.display="block";
-function login(){if(DR.cloud()){DR.login($("ae").value,$("pw").value,false).then(function(){if(!isA()){DR.logout();throw new Error("هذا الحساب ليس أدمن")}show()}).catch(function(e){$("er").textContent=e.message=="BAD"?"البريد أو كلمة المرور غير صحيحة":e.message})}else if($("pw").value===DR.ADMIN_PASS){sessionStorage.dra=1;show()}else $("er").textContent="كلمة المرور غير صحيحة"}
+
+function login(){if($("pw").value===DR.ADMIN_PASS){sessionStorage.dra=1;show()}else $("er").textContent="كلمة المرور غير صحيحة"}
 $("go").onclick=login;$("pw").onkeydown=function(e){if(e.key=="Enter")login()};
 function show(){$("lk").style.display="none";$("wr").classList.add("on");load()}
-if(DR.cloud()?isA():sessionStorage.dra)show();$("out").onclick=function(){sessionStorage.removeItem("dra");DR.logout();location.reload()};
+if(sessionStorage.dra)show();
+$("out").onclick=function(){sessionStorage.removeItem("dra");DR.logout();location.reload()};
 var O=[];
 function load(){DR.allOrders().then(function(r){O=r;render()}).catch(function(e){alert(e.message)})}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -63,6 +64,6 @@ $("sv").onclick=function(){var s=$("ss").value;DR.setStatus(o.id,s).then(functio
 $("dl").onclick=function(){if(confirm("حذف الطلب نهائيًا؟")){DR.delOrder(id).then(function(){O=O.filter(function(x){return x.id!=id});$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})}}}
 $("md").onclick=function(e){if(e.target==this)this.classList.remove("on")};
 $("q").oninput=$("fs").onchange=render;$("rf").onclick=load;
-$("ex").onclick=function(){var r=[["رقم الطلب","الاسم","الموبايل","المحافظة","العنوان","المنتجات","الإجمالي","الحالة","التاريخ"]].concat(O.map(function(o){return[o.id,o.name,o.phone,o.gov,o.addr,o.items.map(function(i){return i.name+"×"+i.qty}).join(" | "),o.total,o.status,o.date]}));
+$("ex").onclick=function(){var r=[["رقم الطلب","الاسم","المافظة","العنوان","المنتجات","الإجمالي","الحالة","التاريخ"]].concat(O.map(function(o){return[o.id,o.name,o.phone,o.gov,o.addr,o.items.map(function(i){return i.name+"×"+i.qty}).join(" | "),o.total,o.status,o.date]}));
 var c="\ufeff"+r.map(function(x){return x.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="orders.csv";a.click()};
 </script></body></html>

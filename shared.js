@@ -1,11 +1,9 @@
-/* ===== إعدادات الموقع ===== */
 window.DR={
- WHATSAPP:"20XXXXXXXXXX",          // رقم واتساب العميل بالصيغة الدولية
- ENDPOINT:"",                      // رابط API لاستقبال الطلبات (Supabase / Apps Script / Make) - فاضي = تجربة محلية
- ADMIN_PASS:"dorg2026",            // باسورد الداشبورد (غيّره)
+ WHATSAPP:"20XXXXXXXXXX",
+ ENDPOINT:"",
+ ADMIN_PASS:"dorg2026",
  LOGO:"https://dorg-raf-product-gallery.lovable.app/__l5e/assets-v1/866394f5-24f5-44b8-b49c-712b7211b656/logo.png",
  HERO:"https://dorg-raf-product-gallery.lovable.app/assets/hero-C6NFzU4O.jpg",
- /* p = سعر البيع ، o = السعر قبل الخصم (اتركه نفس السعر لو مفيش خصم) */
  PRODUCTS:[
   {id:"kitchen-utensil-holder",n:"حامل ومنظم أدوات المطبخ ستانلس ستيل 4 أقسام",c:"home",cn:"أدوات منزلية",p:199,o:350,imgs:["images/p1-1.webp","images/p1-2.webp","images/p1-3.webp"],
    d:"منظم أدوات مائدة أنيق بهيكل ستانلس ستيل مقاوم للصدأ، بـ 4 أقسام داخلية لفصل الشوك والملاعق والسكاكين، مع صينية تصريف تحافظ على جفاف أدواتك.",
@@ -61,7 +59,6 @@ DR.send=function(o){var a=DR.orders();a.unshift(o);DR.save(a);
  if(DR.ENDPOINT){return fetch(DR.ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o)}).catch(function(){})}
  return Promise.resolve()};
 
-/* ===== English content + variant colors ===== */
 DR.VC=["#e58aa0","#9bbd72","#7ba0b5","#b894e0"];
 DR.EN={
 "kitchen-utensil-holder":{n:"Stainless Steel Kitchen Utensil Holder – 4 Compartments",cn:"Home Essentials",d:"A sleek cutlery organizer with a rust-resistant stainless steel body and 4 inner compartments to separate forks, spoons and knives, plus a drain tray that keeps your utensils dry.",f:["4 inner compartments for sorting","Drain tray for excess water","Durable rust-resistant stainless steel body","Plastic base collects water","Non-slip feet"],s:"Size: 18 × 8.7 × 13 cm"},
@@ -72,7 +69,6 @@ DR.EN={
 "kids-lunchbox":{n:"Kids Lunch Box with Compartments & Latches – Choose Your Design",cn:"School Corner",v:["Sheep – Pink","Reindeer – Green","Platypus – Blue","Hippo – Purple"],d:"A lunch box with fun cartoon designs and colors, inner compartments, a small container plus fork and spoon, and side latches that keep food secure.",f:["4 designs and colors to choose from","Inner compartments and small container","Fork and spoon included","Secure side latches"],s:""}};
 DR.GOVEN={"القاهرة":"Cairo","الجيزة":"Giza","الإسكندرية":"Alexandria","القليوبية":"Qalyubia","الشرقية":"Sharqia","الدقهلية":"Dakahlia","البحيرة":"Beheira","الغربية":"Gharbia","المنوفية":"Monufia","كفر الشيخ":"Kafr El Sheikh","دمياط":"Damietta","بورسعيد":"Port Said","الإسماعيلية":"Ismailia","السويس":"Suez","الفيوم":"Fayoum","بني سويف":"Beni Suef","المنيا":"Minya","أسيوط":"Assiut","سوهاج":"Sohag","قنا":"Qena","الأقصر":"Luxor","أسوان":"Aswan","البحر الأحمر":"Red Sea","الوادي الجديد":"New Valley","مطروح":"Matrouh","شمال سيناء":"North Sinai","جنوب سيناء":"South Sinai"};
 
-/* ===== English area names (same order as DR.GOV lists) ===== */
 DR.AREAEN={
 "القاهرة":["Nasr City","Heliopolis","Fifth Settlement","Rehab","Madinaty","Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shubra","Ain Shams","Matareya","Nozha","Obour","15th of May","Badr"],
 "الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek El Ahram","Imbaba","Boulaq El Dakrour","Omraniya","Warraq","Badrashin","Saff","Ausim"],
@@ -102,12 +98,11 @@ DR.AREAEN={
 "شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasna","Nakhl"],
 "جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"]};
 
-/* ===== Accounts + orders (Supabase cloud, or local demo mode when SB is empty) ===== */
 DR.SB={
   URL:"https://mpinhsjvkcqcmebiwqmb.supabase.co",
   KEY:"sb_publishable_x69_VBIKG3OsjHSenUc7gw_OuCZSAE6",
   ADMIN_EMAIL:""
-};   // Supabase Project URL + anon key + admin email
+};
 
 DR.cloud=function(){return !!(DR.SB.URL&&DR.SB.KEY)};
 (function(){
@@ -133,7 +128,7 @@ DR.signup=function(n,ph,e,p,rem){e=e.trim().toLowerCase();
  if(DR.cloud())return api("/auth/v1/signup",{m:"POST",b:{email:e,password:p,data:{name:n,phone:ph}}}).then(function(j){if(!j.access_token)throw new Error("CONFIRM");return mk(j,rem)},er);
  var us=U();if(us[e])return Promise.reject(new Error("EXISTS"));us[e]={name:n,phone:ph,h:hs(p)};try{localStorage.setItem("dr_users",JSON.stringify(us))}catch(x){}
  var s={email:e,uid:e,name:n,phone:ph,rem:!!rem};put(s);return Promise.resolve(s)};
-DR.google=function(){if(!DR.cloud())return Promise.reject(new Error("NOCLOUD"));location.href=DR.SB.URL+"/auth/v1/authorize?provider=google&redirect_to="+encodeURIComponent(location.origin+location.pathname);return new Promise(function(){})};
+DR.google=function(){if(!DR.cloud())return Promise.reject(new Error("NOCLOUD"));location.href=DR.SB.URL+"/auth/v1/authorize?provider=google&redirect_to="+encodeURIComponent("https://dorg-raf.vercel.app");return new Promise(function(){})};
 DR.oauth=function(){var h=location.hash;if(h.indexOf("access_token=")<0)return Promise.resolve(null);var P={};h.slice(1).split("&").forEach(function(kv){var a=kv.split("=");P[a[0]]=decodeURIComponent(a[1]||"")});
  history.replaceState(null,"",location.pathname+location.search);
  return api("/auth/v1/user",{},P.access_token).then(function(u){return mk({user:u,access_token:P.access_token,refresh_token:P.refresh_token,expires_in:+P.expires_in},true)}).catch(function(){return null})};

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة الطلبات | درج و رف</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--o:#e37434;--t:#007979;--t2:#25b3b0;--bg:#f4f1ea;--ink:#10292a;--mut:#6b7c7b}
+*{box-sizing:border-box;margin:0}body{font-family:Cairo,sans-serif;background:var(--bg);color:var(--ink)}
+.lock{min-height:100vh;display:grid;place-items:center;background:linear-gradient(135deg,var(--t),#004f4f)}
+.lb{background:#fff;border-radius:26px;padding:42px 36px;width:min(380px,92vw);text-align:center;animation:up .7s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes up{from{opacity:0;transform:translateY(40px)}}
+.lb img{height:70px;margin:0 auto 18px}input,select{width:100%;padding:12px 14px;border:1.5px solid #e2dccf;border-radius:12px;font:600 .95rem Cairo;background:#fff}
+.bt{background:var(--t);color:#fff;border:0;border-radius:12px;padding:12px 24px;font:700 1rem Cairo;cursor:pointer;transition:.3s}.bt:hover{background:var(--o)}
+.wrap{display:none}.wrap.on{display:block}
+.top{background:#fff;padding:14px 5vw;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 20px #0001;position:sticky;top:0;z-index:5}
+.top h1{font:700 1.4rem 'Reem Kufi'}.top h1 i{color:var(--o);font-style:normal}.top div{display:flex;gap:8px}
+.bt.s{background:#fff;color:var(--t);border:1.5px solid var(--t)}.bt.s:hover{background:var(--t);color:#fff}
+main{max-width:1250px;margin:auto;padding:28px 5vw 60px}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:26px}
+.sc{background:#fff;border-radius:20px;padding:22px;box-shadow:0 6px 26px #0000000a;animation:up .6s backwards;border-top:5px solid var(--t)}
+.sc:nth-child(2){border-color:var(--o)}.sc:nth-child(3){border-color:var(--t2)}.sc:nth-child(4){border-color:var(--ink)}
+.sc span{color:var(--mut);font-weight:600}.sc b{display:block;font-size:2rem;margin-top:4px}
+.tb{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}.tb input{flex:1;min-width:200px}.tb select{width:auto}
+.tw{background:#fff;border-radius:20px;box-shadow:0 6px 26px #0000000a;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}th{background:#f8f5ee;text-align:right;padding:14px 16px;font-size:.85rem;color:var(--mut)}
+td{padding:14px 16px;border-top:1px solid #f0ebe0;font-weight:600;font-size:.93rem}tr.r{cursor:pointer;transition:.2s;animation:up .5s backwards}tr.r:hover{background:#f6fbfa}
+.bd{display:inline-block;padding:4px 14px;border-radius:99px;font-size:.82rem;font-weight:700;color:#fff}
+.empty{text-align:center;padding:60px;color:var(--mut)}
+.md{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:20;padding:16px}.md.on{display:grid}
+.mc{background:#fff;border-radius:24px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:28px;animation:up .45s}
+.mc h2{font:700 1.4rem 'Reem Kufi';margin-bottom:16px;display:flex;justify-content:space-between}.mc h2 button{border:0;background:none;font-size:1.6rem;cursor:pointer}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e6dfd0;gap:16px}.row span{color:var(--mut)}.row b{text-align:left}
+.ln{display:flex;justify-content:space-between;padding:8px 0;font-size:.92rem}
+</style></head><body>
+<div class="lock" id="lk"><div class="lb"><img id="lo" alt=""><h2 style="margin-bottom:6px">لوحة الطلبات</h2><p style="color:var(--mut);margin-bottom:18px">أدخل كلمة المرور للدخول</p><input type="email" id="ae" placeholder="البريد الإلكتروني" style="margin-bottom:10px;display:none"><input type="password" id="pw" placeholder="كلمة المرور"><button class="bt" style="width:100%;margin-top:12px" id="go">دخول</button><p id="er" style="color:#c0392b;margin-top:10px;font-weight:700"></p></div></div>
+<div class="wrap" id="wr"><div class="top"><h1>درج <i>و</i> رف · الطلبات</h1><div><button class="bt s" id="ex">تصدير CSV</button><button class="bt s" id="rf">تحديث</button><button class="bt s" id="out">خروج</button></div></div>
+<main><div class="st" id="st"></div><div class="tb"><input id="q" placeholder="ابحث بالاسم أو الموبايل أو رقم الطلب..."><select id="fs"><option value="">كل الحالات</option></select></div>
+<div class="tw"><table><thead><tr><th>رقم الطلب</th><th>العميل</th><th>الموبايل</th><th>المحافظة / المنطقة</th><th>الإجمالي</th><th>التاريخ</th><th>الحالة</th></tr></thead><tbody id="tb"></tbody></table><div class="empty" id="em">لا توجد طلبات بعد</div></div></main></div>
+<div class="md" id="md"><div class="mc" id="mc"></div></div>
+<script src="shared.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)},ST=["جديد","قيد التجهيز","تم الشحن","تم التسليم","ملغي"],CL={"جديد":"#e37434","قيد التجهيز":"#25b3b0","تم الشحن":"#007979","تم التسليم":"#2e8b57","ملغي":"#9aa5a4"};
+$("lo").src=DR.LOGO;$("lo").onerror=function(){this.remove()};
+ST.forEach(function(s){$("fs").insertAdjacentHTML("beforeend","<option>"+s+"</option>")});
+var isA=function(){var s=DR.sess();return s&&s.email==String(DR.SB.ADMIN_EMAIL).toLowerCase()};if(DR.cloud())$("ae").style.display="block";
+function login(){if(DR.cloud()){DR.login($("ae").value,$("pw").value,false).then(function(){if(!isA()){DR.logout();throw new Error("هذا الحساب ليس أدمن")}show()}).catch(function(e){$("er").textContent=e.message=="BAD"?"البريد أو كلمة المرور غير صحيحة":e.message})}else if($("pw").value===DR.ADMIN_PASS){sessionStorage.dra=1;show()}else $("er").textContent="كلمة المرور غير صحيحة"}
+$("go").onclick=login;$("pw").onkeydown=function(e){if(e.key=="Enter")login()};
+function show(){$("lk").style.display="none";$("wr").classList.add("on");load()}
+if(DR.cloud()?isA():sessionStorage.dra)show();$("out").onclick=function(){sessionStorage.removeItem("dra");DR.logout();location.reload()};
+var O=[];
+function load(){DR.allOrders().then(function(r){O=r;render()}).catch(function(e){alert(e.message)})}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function render(){var rev=O.filter(function(o){return o.status!="ملغي"}).reduce(function(a,o){return a+o.total},0);
+var today=O.filter(function(o){return new Date(o.date).toDateString()==new Date().toDateString()}).length;
+$("st").innerHTML=[["إجمالي الطلبات",O.length],["طلبات جديدة",O.filter(function(o){return o.status=="جديد"}).length],["طلبات اليوم",today],["الإيرادات (ج.م)",rev]].map(function(x,i){return'<div class="sc" style="animation-delay:'+i*.08+'s"><span>'+x[0]+'</span><b>'+x[1]+'</b></div>'}).join("");
+var q=$("q").value.trim(),f=$("fs").value,L=O.filter(function(o){return(!f||o.status==f)&&(!q||(o.name+o.phone+o.id).indexOf(q)>-1)});
+$("em").style.display=L.length?"none":"block";
+$("tb").innerHTML=L.map(function(o,i){return'<tr class="r" data-id="'+esc(o.id)+'" style="animation-delay:'+i*.04+'s"><td>'+esc(o.id)+'</td><td>'+esc(o.name)+'</td><td>'+esc(o.phone)+'</td><td>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</td><td>'+o.total+' ج.م</td><td>'+new Date(o.date).toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"})+'</td><td><span class="bd" style="background:'+CL[o.status]+'">'+esc(o.status)+'</span></td></tr>'}).join("");
+document.querySelectorAll("tr.r").forEach(function(r){r.onclick=function(){detail(r.dataset.id)}})}
+function detail(id){var o=O.filter(function(x){return x.id==id})[0];if(!o)return;
+$("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div><div style="display:flex;gap:10px;margin-top:18px"><select id="ss">'+ST.map(function(s){return'<option'+(s==o.status?' selected':'')+'>'+s+'</option>'}).join("")+'</select><button class="bt" id="sv">حفظ</button><button class="bt s" id="dl" style="color:#c0392b;border-color:#c0392b">حذف</button></div>';
+$("md").classList.add("on");$("x").onclick=function(){$("md").classList.remove("on")};
+$("sv").onclick=function(){var s=$("ss").value;DR.setStatus(o.id,s).then(function(){o.status=s;$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})};
+$("dl").onclick=function(){if(confirm("حذف الطلب نهائيًا؟")){DR.delOrder(id).then(function(){O=O.filter(function(x){return x.id!=id});$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})}}}
+$("md").onclick=function(e){if(e.target==this)this.classList.remove("on")};
+$("q").oninput=$("fs").onchange=render;$("rf").onclick=load;
+$("ex").onclick=function(){var r=[["رقم الطلب","الاسم","الموبايل","المحافظة","العنوان","المنتجات","الإجمالي","الحالة","التاريخ"]].concat(O.map(function(o){return[o.id,o.name,o.phone,o.gov,o.addr,o.items.map(function(i){return i.name+"×"+i.qty}).join(" | "),o.total,o.status,o.date]}));
+var c="\ufeff"+r.map(function(x){return x.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="orders.csv";a.click()};
+</script></body></html>

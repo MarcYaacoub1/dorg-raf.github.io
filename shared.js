@@ -122,18 +122,10 @@ DR.resend=function(e){return api("/auth/v1/resend",{m:"POST",b:{type:"signup",em
 DR.cancelOrder=function(id){var ok=["جديد","قيد التجهيز"];
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id}},tk)}).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
  var s=S(),a=DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));o.status="ملغي";DR.save(a);return Promise.resolve()};
-var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=data,status&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data;d.status=x.status;return d})})};
+var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=data,status&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;return d})})};
 DR.myOrders=function(){var s=S();if(!s)return Promise.resolve([]);
- if(DR.cloud()){
-   return DR.token().then(function(tk){
-     return api("/rest/v1/orders?select=data,status&user_id=eq."+s.uid+"&order=created_at.desc",{},tk).then(function(r){
-       return r.map(function(x){var d=x.data;d.status=x.status;return d});
-     });
-   });
- }
- return Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}));
-};
-DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d}) }):Promise.resolve(DR.orders())};
+ return DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}))};
+DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})}):Promise.resolve(DR.orders())};
 DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
  sendEmailNotification(o, o.status || "جديد");
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk)});

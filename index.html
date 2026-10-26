@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>درج و رف | تفاصيل صغيرة… تصنع فرقًا كبيرًا</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root{--o:#e37434;--t:#007979;--t2:#25b3b0;--bg:#fbf7ef;--ink:#10292a;--mut:#5f7170}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
@@ -50,7 +51,6 @@ section{padding:96px 6vw}.hd{text-align:center;margin-bottom:46px}.hd h2{font:70
 .sv{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:30px 0}.sv span{border:1px solid #25b3b066;border-radius:99px;padding:8px 20px;transition:.3s}.sv span:hover{background:#25b3b0;color:#07151c}
 .wp .btn{background:linear-gradient(90deg,#25b3b0,#e37434);border:0;color:#fff}
 footer{background:#07151c;color:#8fa9a7;text-align:center;padding:0 6vw 30px;font-size:.9rem}footer hr{border:0;border-top:1px solid #fff2;margin-bottom:22px}
-/* السلة: بتطلع من الشمال وبتتقفل بره الشاشة */
 .ov{position:fixed;inset:0;background:#0009;z-index:60;opacity:0;pointer-events:none;transition:.35s}.ov.on{opacity:1;pointer-events:auto}
 .dr{position:fixed;top:0;bottom:0;left:0;width:min(430px,100%);background:#fff;z-index:61;transform:translateX(-110%);visibility:hidden;transition:transform .5s cubic-bezier(.2,.8,.2,1),visibility 0s .5s;display:flex;flex-direction:column;box-shadow:0 0 60px #0004}
 .dr.on{transform:none;visibility:visible;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
@@ -64,7 +64,6 @@ input,textarea,select{width:100%;padding:11px 12px;border:1.5px solid #e2dccf;bo
 .ad2{display:none;grid-column:1/-1;grid-template-columns:1fr 1fr;gap:10px}.ad2.on{display:grid;animation:up .5s both}.ad2 [hidden]{display:none}
 .bk2{background:none;border:0;color:var(--t);font-weight:700;cursor:pointer;padding:10px 20px 0;text-align:right}
 .ok{text-align:center;padding:50px 24px}.ok b{display:grid;place-items:center;width:84px;height:84px;margin:0 auto 18px;border-radius:50%;background:var(--t);color:#fff;font-size:2.6rem;animation:pu .6s}
-/* صفحة المنتج */
 .pd{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;transform:translateY(100%);visibility:hidden;transition:transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .6s}.pd.on{transform:none;visibility:visible;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
 .pt{position:sticky;top:0;z-index:3;background:#fffffff0;backdrop-filter:blur(12px);padding:12px 6vw;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 20px #0001}.pt button.bk{border:0;background:none;font:700 1rem Cairo;color:var(--t);cursor:pointer}
 .pw{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;max-width:1150px;margin:auto;padding:40px 6vw 80px}
@@ -80,7 +79,6 @@ input,textarea,select{width:100%;padding:11px 12px;border:1.5px solid #e2dccf;bo
 #ts{position:fixed;bottom:24px;left:50%;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:13px 26px;border-radius:99px;font-weight:700;z-index:90;transition:.5s cubic-bezier(.2,.9,.3,1.3)}#ts.on{transform:translate(-50%,0)}
 @media(max-width:860px){.hero{grid-template-columns:1fr;text-align:center;padding-top:110px}.sub{margin-inline:auto}nav{display:none}.fc{display:none}.pw{grid-template-columns:1fr;gap:24px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.w{opacity:1;transform:none}}
-/* ===== v2: i18n, splash, animations ===== */
 html[dir=rtl]{--s:-1;--f:Cairo,sans-serif;--fh:'Reem Kufi',Cairo,sans-serif}
 html[dir=ltr]{--s:1;--f:Outfit,Cairo,sans-serif;--fh:Outfit,Cairo,sans-serif}
 body,button,input,select,.btn,.cb,.ad,.f,.pt button.bk,.bk2{font-family:var(--f)}
@@ -91,7 +89,6 @@ body,button,input,select,.btn,.cb,.ad,.f,.pt button.bk,.bk2{font-family:var(--f)
 .wp a{color:inherit}footer a{color:#25b3b0;font-weight:700;text-decoration:none}footer a:hover{text-decoration:underline}
 .hr{display:flex;gap:10px;align-items:center}.lgb{border:2px solid var(--t);background:#fff;color:var(--t);border-radius:12px;padding:8px 14px;font-weight:800;cursor:pointer;transition:.3s}.lgb:hover{background:var(--t);color:#fff}
 .lt{font:800 1.5rem var(--fh);color:var(--t)}
-/* splash */
 #pre{background:var(--bg);transform:none;clip-path:circle(150% at 50% 50%);transition:clip-path 1s cubic-bezier(.77,0,.18,1) .3s;overflow:hidden}
 body.go #pre{transform:none;clip-path:circle(0 at 50% 50%);pointer-events:none}
 #pre:before,#pre:after{content:"";position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;animation:fl 6s ease-in-out infinite}
@@ -100,21 +97,17 @@ body.go #pre{transform:none;clip-path:circle(0 at 50% 50%);pointer-events:none}
 #pre img{width:min(260px,62vw);filter:none;margin:auto;animation:pop 1.1s cubic-bezier(.2,.9,.3,1.3) both}
 @keyframes pop{0%{opacity:0;transform:scale(.4) rotate(-8deg)}60%{opacity:1;transform:scale(1.12) rotate(3deg)}100%{opacity:1;transform:none}}
 .bar{width:190px;height:5px;background:#10292a14;border-radius:9px;margin:28px auto 0;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--t),var(--o));animation:ld 1.5s .3s ease forwards}@keyframes ld{to{width:100%}}
-/* logo hover: grow + wobble */
 .lg{cursor:pointer;transition:transform .4s}.lg:hover{transform:scale(1.1);animation:jel .8s both}
 @keyframes jel{0%{transform:scale(1)}25%{transform:scale(1.2,.84) rotate(-5deg)}45%{transform:scale(.92,1.12) rotate(4deg)}65%{transform:scale(1.14,.95) rotate(-2deg)}100%{transform:scale(1.1) rotate(0)}}
-/* cart: add = wobble + color shift, click = jelly skew + different colors */
 .cb{transition:background .3s}.cb.b,.cb.k{transform-origin:center}
 .cb.b{animation:cadd .85s}.cb.k{animation:cclk .6s}
 @keyframes cadd{0%{transform:scale(1) rotate(0);background:var(--t)}20%{transform:scale(1.35) rotate(-14deg);background:var(--o)}40%{transform:scale(1.25) rotate(12deg);background:#2e8b57}60%{transform:scale(1.2) rotate(-8deg);background:var(--o)}80%{transform:scale(1.08) rotate(4deg);background:var(--t2)}100%{transform:scale(1) rotate(0);background:var(--t)}}
 @keyframes cclk{0%{transform:scale(1);background:var(--t)}30%{transform:scale(1.3,.8) skewX(-12deg);background:#10292a}55%{transform:scale(.85,1.2) skewX(10deg);background:var(--t2)}80%{transform:scale(1.1,.96) skewX(-4deg);background:var(--o)}100%{transform:scale(1);background:var(--t)}}
-/* color/design picker */
 .mo{position:fixed;inset:0;background:#0008;z-index:80;display:grid;place-items:center;padding:16px;opacity:0;pointer-events:none;transition:.3s}.mo.on{opacity:1;pointer-events:auto}
 .mb{background:#fff;border-radius:24px;padding:24px;width:min(440px,100%);transform:translateY(30px) scale(.94);transition:.4s cubic-bezier(.2,.9,.3,1.3)}.mo.on .mb{transform:none}
 .mb h3{margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}.mb h3 button{border:0;background:none;font-size:1.6rem;cursor:pointer}
 .og{display:grid;grid-template-columns:1fr 1fr;gap:12px}.og button{border:2px solid #eee;background:#fff;border-radius:16px;padding:10px;cursor:pointer;font-weight:700;font-size:.9rem;transition:.25s}.og button:hover{border-color:var(--o);transform:translateY(-4px)}.og img{width:100%;aspect-ratio:1;object-fit:contain;margin-bottom:6px}
 .og i,.vs i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:6px;vertical-align:middle}
-/* order number, account, status tracker */
 .onum{display:inline-block;margin:4px 0;padding:14px 30px;border-radius:99px;background:#e8f3f2;border:2px dashed var(--t);color:var(--t);font:800 1.7rem var(--fh);letter-spacing:.06em;direction:ltr}
 .mb.w{width:min(540px,100%);max-height:90vh;overflow:auto}
 .af{display:grid;gap:10px}.rm{display:flex;gap:8px;align-items:center;font-weight:600;font-size:.9rem}.rm input{width:auto}.er{color:#c0392b;font-weight:700;min-height:1.2em;font-size:.9rem}
@@ -127,8 +120,6 @@ body.go #pre{transform:none;clip-path:circle(0 at 50% 50%);pointer-events:none}
 .stp i.on{color:var(--t)}.stp i.on:before,.stp i.on:after{background:var(--t)}.stp i.cur:before{box-shadow:0 0 0 5px #25b3b033;animation:pu 1s infinite alternate}
 .can{display:inline-block;background:#9aa5a4;color:#fff;border-radius:99px;padding:3px 14px;font-size:.8rem;font-weight:700;margin:8px 0}
 @media(max-width:560px){.lgb,.cb{padding:8px 10px;font-size:.85rem}header .lg{height:42px}.hr{gap:6px}}
-
-/* profile popover + google */
 .mb{position:relative}.mx{position:absolute;top:12px;inset-inline-end:14px;border:0;background:none;font-size:1.6rem;cursor:pointer;z-index:2}
 .mo.acc{place-items:start end;padding:78px 5vw 16px}
 .mb.w{transform:scale(.15) translateY(-30px);opacity:0;transform-origin:top right;transition:transform .5s cubic-bezier(.2,.9,.3,1.15),opacity .3s}
@@ -190,7 +181,6 @@ function tx(p){return lang=="ar"?{n:p.n,cn:p.cn,d:p.d,f:p.f,s:p.s,v:p.v?p.v.map(
 function ts(m){var e=$("ts");e.textContent=m;e.classList.add("on");clearTimeout(ts.t);ts.t=setTimeout(function(){e.classList.remove("on")},2400)}
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("v");io.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".rv").forEach(function(e){io.observe(e)});
 function wob(c){document.querySelectorAll(".cb").forEach(function(e){e.classList.remove("b","k");void e.offsetWidth;e.classList.add(c)})}
-/* language */
 function applyLang(){var t=T[lang],h=document.documentElement;h.lang=lang;h.dir=lang=="ar"?"rtl":"ltr";document.title=t.title;
 document.querySelectorAll("[data-t]").forEach(function(e){e.innerHTML=t[e.dataset.t]});
 $("lgb").textContent=lang=="ar"?"EN":"عربي";$("sv").innerHTML=t.sv.map(function(s){return"<span>"+s+"</span>"}).join("");
@@ -198,17 +188,14 @@ $("mxd").textContent="-"+Math.max.apply(0,D.map(disc))+"%";var s=t.mqs.map(funct
 accBtn();if(accOn&&$("mo").classList.contains("on"))accRender();wordify();grid();if(cur&&$("pd").classList.contains("on"))pdR();if($("dr").classList.contains("on"))cartView()}
 function wordify(){var hh=$("h1"),i=0,b=hh.dataset.d?.05:.9;hh.dataset.d=1;hh.innerHTML=T[lang].h1;
 (function w(p){[].slice.call(p.childNodes).forEach(function(c){if(c.nodeType==3){var f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(function(s){if(!s.trim()){f.appendChild(document.createTextNode(s));return}var sp=document.createElement("span");sp.className="w";sp.textContent=s;sp.style.animationDelay=b+i++*.12+"s";f.appendChild(sp)});c.replaceWith(f)}else w(c)})})(hh)}
-/* cards */
 function grid(){var t=T[lang];$("gr").innerHTML="";D.forEach(function(x,i){var y=tx(x),e=document.createElement("div");e.className="cd rv"+(flt!="all"&&x.c!=flt?" h":"");e.dataset.c=x.c;e.style.transitionDelay=i*.08+"s";
 e.innerHTML='<div class="pi">'+(disc(x)?'<span class="off">'+t.offc(disc(x))+'</span>':'')+x.imgs.slice(0,2).map(function(s){return'<img src="'+s+'" alt="" loading="lazy">'}).join("")+'</div><div class="in"><div class="ct">'+y.cn+'</div><h3>'+y.n+'</h3><div class="pr"><div>'+priceH(x)+'</div><button class="ad">'+t.add+'</button></div></div>';
 e.onclick=function(){openP(x.id)};e.querySelector(".ad").onclick=function(ev){ev.stopPropagation();x.v?pick(x):add(x.id,0,1)};$("gr").appendChild(e);io.observe(e)})}
 document.querySelectorAll(".f").forEach(function(f){f.onclick=function(){flt=f.dataset.c;document.querySelectorAll(".f").forEach(function(z){z.classList.toggle("on",z==f)});document.querySelectorAll(".cd").forEach(function(k){k.classList.toggle("h",flt!="all"&&k.dataset.c!=flt)})}});
-/* color / design picker */
 function pick(p){accOn=false;$("mo").classList.remove("acc");$("mb").className="mb";var x=tx(p);$("mb").innerHTML='<h3><span>'+T[lang].pick+'</span><button id="mx">×</button></h3><div class="og">'+p.v.map(function(v,i){return'<button data-x="'+i+'"><img src="'+p.imgs[v.i]+'" alt=""><i style="background:'+DR.VC[i]+'"></i>'+x.v[i]+'</button>'}).join("")+'</div>';
 $("mo").classList.add("on");$("mx").onclick=function(){$("mo").classList.remove("on")};
 $("mb").querySelectorAll(".og button").forEach(function(b){b.onclick=function(){$("mo").classList.remove("on");add(p.id,+b.dataset.x,1)}})}
 $("mo").onclick=function(e){if(e.target==this)this.classList.remove("on")};
-/* cart */
 function add(id,v,q){var p=find(id),k=id+"|"+(p.v?v:0);cart[k]=cart[k]||{id:id,v:p.v?v:0,q:0};cart[k].q+=q;upd();wob("b");ts(T[lang].added)}
 function tot(){var s=0,n=0;for(var k in cart){var c=cart[k];s+=find(c.id).p*c.q;n+=c.q}return[s,n]}
 function upd(){document.querySelectorAll(".cn").forEach(function(e){e.textContent=tot()[1]})}
@@ -236,7 +223,6 @@ var items=lines().map(function(l){return{name:l.p.n,variant:l.p.v?l.p.v[l.c.v].n
 var addr="شارع "+f.get("street")+" - عقار "+f.get("bld")+" - الدور "+f.get("floor")+" - شقة "+f.get("apt")+(f.get("mark")?" - "+f.get("mark"):"");
 var o={id:"DR-"+Date.now().toString().slice(-6),date:new Date().toISOString(),status:"جديد",name:f.get("name"),phone:f.get("phone"),gov:f.get("gov"),area:area,street:f.get("street"),bld:f.get("bld"),floor:f.get("floor"),apt:f.get("apt"),mark:f.get("mark"),addr:addr,note:f.get("note"),items:items,total:s[0]};
 DR.send(o).then(function(){cart={};upd();$("dt").textContent=t.dn;$("bd").innerHTML='<div class="ok"><b>✓</b><h3>'+t.ok+'</h3><p style="margin:10px 0 6px;color:#5f7170">'+t.on+'</p><div class="onum">'+o.id+'</div><p style="margin:14px 0 20px;color:#5f7170">'+t.wt+'</p>'+(DR.sess()?'<button class="btn p" id="vo" style="margin:0">'+t.vo+'</button>':'')+'</div>';if($("vo"))$("vo").onclick=function(){drawer(false);accOpen("me")}}).catch(function(){ts(t.err)})}}
-/* product page */
 function openP(id,nopush){var p=find(id);cur={p:p,v:0,q:1,m:0};pdR();$("pd").classList.add("on");$("pd").scrollTop=0;document.body.classList.add("lock");if(!nopush)history.pushState(null,"","#p="+id)}
 function closeP(back){$("pd").classList.remove("on");document.body.classList.remove("lock");if(!back&&location.hash.indexOf("#p=")==0)history.back()}
 function pdR(){var t=T[lang],p=cur.p,y=tx(p),im=p.imgs[cur.m];
@@ -252,7 +238,6 @@ $("pa").onclick=function(){add(p.id,cur.v,cur.q)}}
 addEventListener("popstate",function(){if(location.hash.indexOf("#p=")==0){var p=find(location.hash.slice(3));if(p)openP(p.id,true)}else closeP(true)});
 addEventListener("keydown",function(e){if(e.key=="Escape"){if($("mo").classList.contains("on"))$("mo").classList.remove("on");else if($("dr").classList.contains("on"))drawer(false);else if($("pd").classList.contains("on"))closeP()}});
 
-/* account */
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
 var AV="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" fill="#dfe7e6"/><circle cx="48" cy="36" r="17" fill="#9db0ae"/><path d="M14 96c0-22 15-34 34-34s34 12 34 34z" fill="#9db0ae"/></svg>');
 var GG='<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>';
@@ -279,7 +264,6 @@ else{var up=acc=="up";acc=up?"up":"in";b.innerHTML=x+'<h3><span>'+(up?t.signup:t
  (up?DR.signup(v("an"),v("aph"),v("ae"),v("ap"),$("rm").checked):DR.login(v("ae"),v("ap"),$("rm").checked)).then(function(){accBtn();acc="me";accRender()}).catch(function(z){if(z.message=="CONFIRM"||z.message=="UNVERIFIED"){pend={e:z.email||v("ae"),rem:$("rm").checked};if(z.message=="UNVERIFIED")DR.resend(pend.e).catch(function(){});acc="vf";accRender();return}bt.disabled=false;$("er2").textContent=t.e[z.message]||z.message})}}
 $("mx").onclick=function(){$("mo").classList.remove("on")}}
 $("acb").onclick=function(){accOpen()};
-/* init */
 $("pl").src=$("lg").src=DR.LOGO;$("hi").src=DR.HERO;$("hi").onerror=function(){this.style.visibility="hidden"};
 [$("pl"),$("lg")].forEach(function(e){e.onerror=function(){var b=document.createElement("b");b.className="lt";b.textContent="درج و رف";e.replaceWith(b)}});
 $("lgb").onclick=function(){lang=lang=="en"?"ar":"en";applyLang()};

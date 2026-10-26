@@ -53,11 +53,6 @@ window.DR={
 "شمال سيناء":["العريش","الشيخ زويد","رفح","بئر العبد","الحسنة","نخل"],
 "جنوب سيناء":["شرم الشيخ","دهب","نويبع","طابا","الطور","سانت كاترين","رأس سدر"]}
 };
-DR.orders=function(){try{return JSON.parse(localStorage.getItem("dr_orders")||"[]")}catch(e){return[]}};
-DR.save=function(a){try{localStorage.setItem("dr_orders",JSON.stringify(a))}catch(e){}};
-DR.send=function(o){var a=DR.orders();a.unshift(o);DR.save(a);
- if(DR.ENDPOINT){return fetch(DR.ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o)}).catch(function(){})}
- return Promise.resolve()};
 
 DR.VC=["#e58aa0","#9bbd72","#7ba0b5","#b894e0"];
 DR.EN={
@@ -106,6 +101,21 @@ DR.SB={
 
 DR.cloud=function(){return !!(DR.SB.URL&&DR.SB.KEY)};
 (function(){
+if(typeof emailjs !== 'undefined'){
+  emailjs.init("DGvd9t5ilCQknU5wI");
+}
+var sendEmailNotification=function(orderData, newStatus){
+  if(typeof emailjs === 'undefined') return;
+  var templateParams = {
+    to_email: orderData.email,
+    to_name: orderData.name || "العميل",
+    order_id: orderData.id,
+    status: newStatus || orderData.status || "جديد",
+    total: orderData.total
+  };
+  emailjs.send("service_r8zkdxo", "template_0k0g2jp", templateParams).catch(function(err){console.log('Email Error:', err);});
+};
+
 var S=function(){try{return JSON.parse(localStorage.getItem("dr_sess")||sessionStorage.getItem("dr_sess")||"null")}catch(e){return null}};
 var put=function(s){try{localStorage.removeItem("dr_sess");sessionStorage.removeItem("dr_sess");(s.rem?localStorage:sessionStorage).setItem("dr_sess",JSON.stringify(s))}catch(e){}};
 var api=function(p,o,tk){o=o||{};var h={apikey:DR.SB.KEY,"Content-Type":"application/json",Authorization:"Bearer "+(tk||DR.SB.KEY)};for(var k in (o.h||{}))h[k]=o.h[k];
@@ -145,12 +155,28 @@ DR.myOrders=function(){var s=S();if(!s)return Promise.resolve([]);
  return DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}))};
 DR.allOrders=function(){return DR.cloud()?q():Promise.resolve(DR.orders())};
 DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
+ sendEmailNotification(o, o.status || "جديد");
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,data:o}},tk)});
  var a=DR.orders();a.unshift(o);DR.save(a);
  if(DR.ENDPOINT)return fetch(DR.ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o)}).catch(function(){});
  return Promise.resolve()};
-DR.setStatus=function(id,st){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},tk)});
- var a=DR.orders();a.forEach(function(o){if(o.id==id)o.status=st});DR.save(a);return Promise.resolve()};
+DR.setStatus=function(id,st){
+ if(DR.cloud()){
+   return DR.token().then(function(tk){
+     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
+       if(res && res.length > 0 && res[0].data){
+         sendEmailNotification(res[0].data, st);
+       }
+     }).catch(function(){}).then(function(){
+       return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},tk);
+     });
+   });
+ }
+ var a=DR.orders();var targetOrder=null;
+ a.forEach(function(o){if(o.id==id){o.status=st;targetOrder=o;}});
+ DR.save(a);
+ if(targetOrder) sendEmailNotification(targetOrder, st);
+ return Promise.resolve()};
 DR.delOrder=function(id){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
  DR.save(DR.orders().filter(function(o){return o.id!=id}));return Promise.resolve()};
 })();

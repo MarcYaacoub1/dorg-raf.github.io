@@ -47,7 +47,7 @@ window.DR={
 "قنا":["قنا","نجع حمادي","دشنا","قوص","أبوتشت","فرشوط","نقادة"],
 "الأقصر":["الأقصر","إسنا","أرمنت","الطود","البياضية","القرنة"],
 "أسوان":["أسوان","كوم أمبو","إدفو","دراو","نصر النوبة","أبو سمبل"],
-"البحر الأحمر":["الغردقة","سفاجا","القصير","مرسى علم","رأس غارب","الجونة"],
+"البحر الأحمر":["الغردقة","سفاجا","القصير","مرسى علم","رأس غارب","رأس غارب","الجونة"],
 "الوادي الجديد":["الخارجة","الداخلة","الفرافرة","باريس","بلاط"],
 "مطروح":["مرسى مطروح","العلمين","الحمام","الضبعة","سيوة","النجيلة","سيدي براني"],
 "شمال سيناء":["العريش","الشيخ زويد","رفح","بئر العبد","الحسنة","نخل"],
@@ -134,8 +134,7 @@ DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
 DR.setStatus=function(id,st){
  if(DR.cloud()){
    return DR.token().then(function(tk){
-     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).text().then(function(text){
-       var res = text ? JSON.parse(text) : [];
+     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
        if(res && res.length > 0 && res[0].data){
          sendEmailNotification(res[0].data, st);
        }
@@ -149,6 +148,6 @@ DR.setStatus=function(id,st){
  DR.save(a);
  if(targetOrder) sendEmailNotification(targetOrder, st);
  return Promise.resolve()};
-DR.delOrder=function(id){vocalObj=null;if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
+DR.delOrder=function(id){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
  DR.save(DR.orders().filter(function(o){return o.id!=id}));return Promise.resolve()};
 })();

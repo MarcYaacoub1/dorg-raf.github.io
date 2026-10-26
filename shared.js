@@ -103,7 +103,12 @@ DR.AREAEN={
 "جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"]};
 
 /* ===== Accounts + orders (Supabase cloud, or local demo mode when SB is empty) ===== */
-DR.SB={URL:"",KEY:"",ADMIN_EMAIL:""};   // Supabase Project URL + anon key + admin email
+DR.SB={
+  URL:"https://mpinhsjvkcqcmebiwqmb.supabase.co",
+  KEY:"sb_publishable_x69_VBIKG3OsjHSenUc7gw_OuCZSAE6",
+  ADMIN_EMAIL:""
+};   // Supabase Project URL + anon key + admin email
+
 DR.cloud=function(){return !!(DR.SB.URL&&DR.SB.KEY)};
 (function(){
 var S=function(){try{return JSON.parse(localStorage.getItem("dr_sess")||sessionStorage.getItem("dr_sess")||"null")}catch(e){return null}};

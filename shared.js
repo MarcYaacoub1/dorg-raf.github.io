@@ -77,9 +77,8 @@ if(typeof emailjs !== 'undefined'){
 }
 var sendEmailNotification=function(orderData, newStatus){
   if(typeof emailjs === 'undefined') return;
-  var targetEmail = orderData.email || "marcyaacoub2020@gmail.com";
   var templateParams = {
-    to_email: targetEmail,
+    to_email: orderData.email || "marcyaacoub2020@gmail.com",
     to_name: orderData.name || "العميل",
     order_id: orderData.id,
     status: newStatus || orderData.status || "جديد",
@@ -122,23 +121,23 @@ DR.resend=function(e){return api("/auth/v1/resend",{m:"POST",b:{type:"signup",em
 DR.cancelOrder=function(id){var ok=["جديد","قيد التجهيز"];
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id}},tk)}).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
  var s=S(),a=DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));o.status="ملغي";DR.save(a);return Promise.resolve()};
-var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=data,status&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;return d})})};
+var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=data,status&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data;d.status=x.status;return d})})};
 DR.myOrders=function(){var s=S();if(!s)return Promise.resolve([]);
  return DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}))};
-DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})}):Promise.resolve(DR.orders())};
+DR.allOrders=function(){return DR.cloud()?q():Promise.resolve(DR.orders())};
 DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
  sendEmailNotification(o, o.status || "جديد");
- if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk)});
+ if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,data:o}},tk)});
  var a=DR.orders();a.unshift(o);DR.save(a);
+ if(DR.ENDPOINT)return fetch(DR.ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o)}).catch(function(){});
  return Promise.resolve()};
 DR.setStatus=function(id,st){
  if(DR.cloud()){
    return DR.token().then(function(tk){
-     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
+     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).text().then(function(text){
+       var res = text ? JSON.parse(text) : [];
        if(res && res.length > 0 && res[0].data){
-         var ord = res[0].data;
-         ord.status = st;
-         sendEmailNotification(ord, st);
+         sendEmailNotification(res[0].data, st);
        }
      }).catch(function(){}).then(function(){
        return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},tk);
@@ -150,6 +149,6 @@ DR.setStatus=function(id,st){
  DR.save(a);
  if(targetOrder) sendEmailNotification(targetOrder, st);
  return Promise.resolve()};
-DR.delOrder=function(id){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
+DR.delOrder=function(id){vocalObj=null;if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
  DR.save(DR.orders().filter(function(o){return o.id!=id}));return Promise.resolve()};
 })();

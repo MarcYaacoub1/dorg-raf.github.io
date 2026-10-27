@@ -31,6 +31,9 @@ td{padding:14px 16px;border-top:1px solid #f0ebe0;font-weight:600;font-size:.93r
 .mc h2{font:700 1.4rem 'Reem Kufi';margin-bottom:16px;display:flex;justify-content:space-between}.mc h2 button{border:0;background:none;font-size:1.6rem;cursor:pointer}
 .row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #e6dfd0;gap:16px}.row span{color:var(--mut)}.row b{text-align:left}
 .ln{display:flex;justify-content:space-between;padding:8px 0;font-size:.92rem}
+.cancel-box{background:#fdf0e6;border:1px solid #e3743455;padding:12px;border-radius:12px;margin-top:15px;text-align:center;}
+.cancel-box b{color:#c0392b;font-size:1.1rem;}
+.cancel-box span{display:block;color:#5f7170;font-size:.9rem;margin-top:5px;}
 </style></head><body>
 <div class="lock" id="lk"><div class="lb"><img id="lo" alt=""><h2 style="margin-bottom:6px">لوحة الطلبات</h2><p style="color:var(--mut);margin-bottom:18px">أدخل كلمة المرور للدخول</p><input type="password" id="pw" placeholder="كلمة المرور"><button class="bt" style="width:100%;margin-top:12px" id="go">دخول</button><p id="er" style="color:#c0392b;margin-top:10px;font-weight:700"></p></div></div>
 <div class="wrap" id="wr"><div class="top"><h1>درج <i>و</i> رف · الطلبات</h1><div><button class="bt s" id="ex">تصدير CSV</button><button class="bt s" id="rf">تحديث</button><button class="bt s" id="out">خروج</button></div></div>
@@ -67,12 +70,13 @@ $("tb").innerHTML=L.map(function(o,i){return'<tr class="r" data-id="'+esc(o.id)+
 document.querySelectorAll("tr.r").forEach(function(r){r.onclick=function(){detail(r.dataset.id)}})}
 function detail(id){var o=O.filter(function(x){return x.id==id})[0];if(!o)return;
 var isCancelled = o.status == "ملغي";
-var cancelReasonHtml = isCancelled && o.cancelReason ? '<div class="row" style="color:#c0392b;background:#fdf0e6;padding:10px;border-radius:8px;margin-top:10px"><span>سبب الإلغاء</span><b>'+esc(o.cancelReason)+'</b></div>' : '';
+var cancelHtml = isCancelled ? '<div class="cancel-box"><b>🚫 ملغي من قبل العميل</b>'+(o.cancelReason?'<span>السبب: '+esc(o.cancelReason)+'</span>':'')+'</div>' : '';
+
 var controls = isCancelled 
-  ? '<div style="color:#c0392b;font-weight:700;margin-top:18px;text-align:center;background:#fdf0e6;padding:12px;border-radius:12px">الطلب ملغي من قبل العميل (لا يمكن تعديل الحالة)</div><div style="margin-top:10px"><button class="bt s" id="dl" style="width:100%;color:#c0392b;border-color:#c0392b">حذف الطلب نهائياً</button></div>'
+  ? '<div style="margin-top:18px"><button class="bt s" id="dl" style="width:100%;color:#c0392b;border-color:#c0392b">حذف الطلب نهائياً</button></div>'
   : '<div style="display:flex;gap:10px;margin-top:18px"><select id="ss">'+ST.map(function(s){return'<option'+(s==o.status?' selected':'')+'>'+s+'</option>'}).join("")+'</select><button class="bt" id="sv">حفظ</button><button class="bt s" id="dl" style="color:#c0392b;border-color:#c0392b">حذف</button></div>';
 
-$("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+cancelReasonHtml+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div>'+controls;
+$("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+cancelHtml+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div>'+controls;
 $("md").classList.add("on");$("x").onclick=function(){$("md").classList.remove("on")};
 if(!isCancelled) {
   $("sv").onclick=function(){

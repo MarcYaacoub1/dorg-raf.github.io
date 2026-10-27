@@ -61,7 +61,17 @@ document.querySelectorAll("tr.r").forEach(function(r){r.onclick=function(){detai
 function detail(id){var o=O.filter(function(x){return x.id==id})[0];if(!o)return;
 $("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div><div style="display:flex;gap:10px;margin-top:18px"><select id="ss">'+ST.map(function(s){return'<option'+(s==o.status?' selected':'')+'>'+s+'</option>'}).join("")+'</select><button class="bt" id="sv">حفظ</button><button class="bt s" id="dl" style="color:#c0392b;border-color:#c0392b">حذف</button></div>';
 $("md").classList.add("on");$("x").onclick=function(){$("md").classList.remove("on")};
-$("sv").onclick=function(){var s=$("ss").value;DR.setStatus(o.id,s).then(function(){o.status=s;$("md").classList.remove("on");render();alert("تم تحديث الحالة وحفظها وإرسال الإيميل بنجاح!");}).catch(function(e){alert(e.message)})};
+$("sv").onclick=function(){
+  var s=$("ss").value;
+  DR.setStatus(o.id,s).then(function(){
+    o.status=s;
+    $("md").classList.remove("on");
+    render();
+    alert("تم تحديث الحالة وإرسال إيميل للعميل!");
+  }).catch(function(e){
+    alert("حصل خطأ: "+e.message);
+  });
+};
 $("dl").onclick=function(){if(confirm("حذف الطلب نهائيًا؟")){DR.delOrder(id).then(function(){O=O.filter(function(x){return x.id!=id});$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})}}}
 $("md").onclick=function(e){if(e.target==this)this.classList.remove("on")};
 $("q").oninput=$("fs").onchange=render;$("rf").onclick=load;

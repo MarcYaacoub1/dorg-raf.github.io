@@ -195,10 +195,20 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     return api("/auth/v1/resend",{m:"POST",b:{type:"signup",email:e.trim().toLowerCase()}}).then(function(){return 1});
   };
 
-  window.DR.cancelOrder = function(id){
+  // تعديل دالة الإلغاء عشان تستقبل السبب
+  window.DR.cancelOrder = function(id, reason){
     var ok=["جديد","قيد التجهيز"];
-    if(window.DR.cloud()) return window.DR.token().then(function(tk){return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id}},tk)}).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
-    var s=S(),a=window.DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));o.status="ملغي";window.DR.save(a);return Promise.resolve();
+    if(window.DR.cloud()) {
+      return window.DR.token().then(function(tk){
+        return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id, p_reason: reason || ""}},tk);
+      }).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
+    }
+    var s=S(),a=window.DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];
+    if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));
+    o.status="ملغي";
+    o.cancelReason = reason || "";
+    window.DR.save(a);
+    return Promise.resolve();
   };
 
   window.DR.myOrders = function(){

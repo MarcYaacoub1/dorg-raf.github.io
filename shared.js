@@ -116,7 +116,9 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         status: newStatus || orderData.status || "جديد",
         total: orderData.total
       };
-      emailjs.send("service_r8zkdxo", "template_0k0g2jp", templateParams).catch(function(err){});
+      emailjs.send("service_r8zkdxo", "template_0k0g2jp", templateParams).catch(function(err){
+        console.log("Email error:", err);
+      });
     } catch(e) {}
   };
 
@@ -199,20 +201,25 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     var s=S(),a=window.DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));o.status="ملغي";window.DR.save(a);return Promise.resolve();
   };
 
-  var q = function(extra){
+  window.DR.myOrders = function(){
+    var s=S();if(!s)return Promise.resolve([]);
+    if(!window.DR.cloud()) return Promise.resolve(window.DR.orders().filter(function(o){return o.email==s.email}));
+    
     return window.DR.token().then(function(tk){
-      return api("/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc"+(extra||""),{},tk);
-    }).then(function(r){
-      return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d;});
+      var qUrl = "/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc";
+      if(s.uid && s.email) {
+        qUrl += "&or=(user_id.eq." + s.uid + ",data->>email.eq." + encodeURIComponent(s.email) + ")";
+      } else if(s.uid) {
+        qUrl += "&user_id=eq." + s.uid;
+      } else if(s.email) {
+        qUrl += "&data->>email=eq." + encodeURIComponent(s.email);
+      }
+      return api(qUrl, {}, tk).then(function(r){
+        return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d;});
+      });
     });
   };
 
-  window.DR.myOrders = function(){
-    var s=S();if(!s)return Promise.resolve([]);
-    return window.DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(window.DR.orders().filter(function(o){return o.email==s.email}));
-  };
-
-  // سحب الطلبات للداشبورد (سحابي + محلي)
   window.DR.allOrders = function(){
     var local = window.DR.orders();
     if(!window.DR.cloud()) return Promise.resolve(local);
@@ -224,7 +231,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         "Content-Type": "application/json"
       }
     }).then(function(r){
-      if(!r.ok) throw new Error("فشل في جلب الطلبات من السيرفر");
+      if(!r.ok) throw new Error("فشل في جلب الطلبات");
       return r.json();
     }).then(function(r){
       var cloudOrders = r.map(function(x){
@@ -233,7 +240,6 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         d.id = x.id || d.id;
         return d;
       });
-      
       var all = cloudOrders.concat(local);
       var unique = [];
       var map = new Set();
@@ -243,12 +249,11 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
       unique.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
       return unique;
     }).catch(function(err){
-      console.error("خطأ في جلب الطلبات:", err);
+      console.error(err);
       return local; 
     });
   };
 
-  // إرسال الطلب (بيتحفظ محلياً أولاً لضمان الظهور)
   window.DR.send = function(o){
     var s=S();if(s){o.email=s.email;o.uid=s.uid;}
     sendEmailNotification(o, o.status || "جديد");
@@ -259,30 +264,30 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
       return window.DR.token().then(function(tk){
         return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk);
       }).catch(function(e){
-        console.warn("تم الحفظ محلياً، السيرفر لم يستجب:", e);
+        console.warn("تم الحفظ محلياً فقط:", e);
         return true; 
       });
     }
     return Promise.resolve(true);
   };
 
-  // تغيير الحالة (بيتبعت إيميل + بيتحدث في السيرفر والمحلي)
   window.DR.setStatus = function(id, st){
-    var a=window.DR.orders();var targetOrder=null;
+    var a=window.DR.orders();
+    var targetOrder=null;
     a.forEach(function(o){ if(o.id==id){ o.status=st; targetOrder=o; } });
     window.DR.save(a);
     if(targetOrder) sendEmailNotification(targetOrder, st);
 
     if(window.DR.cloud()){
-      return window.DR.token().then(function(tk){
-        return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
-          var ord = (res && res.length > 0 && res[0].data) ? res[0].data : {};
-          ord.status = st;
-          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st, data: ord}},tk);
-        });
-      }).catch(function(e){
-        console.warn("تم تحديث الحالة محلياً، السيرفر لم يستجب:", e);
+      return api("/rest/v1/orders?id=eq."+encodeURIComponent(id), {
+        m: "PATCH",
+        h: {Prefer:"return=minimal"},
+        b: {status: st}
+      }).then(function(){
         return true;
+      }).catch(function(e){
+        console.error("Server update failed:", e);
+        throw new Error("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات في Supabase.");
       });
     }
     return Promise.resolve(true);

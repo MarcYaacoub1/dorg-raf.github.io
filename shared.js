@@ -196,16 +196,31 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     return api("/auth/v1/resend",{m:"POST",b:{type:"signup",email:e.trim().toLowerCase()}}).then(function(){return 1});
   };
 
+  // تعديل دالة الإلغاء عشان تشتغل مع الـ API مباشرة وتضيف بيانات العميل والسبب
   window.DR.cancelOrder = function(id, reason){
     var ok=["جديد","قيد التجهيز"];
     if(window.DR.cloud()) {
       return window.DR.token().then(function(tk){
-        return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id, p_reason: reason || ""}},tk);
-      }).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
+        return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
+          if(!res || !res.length) throw new Error("NOCANCEL");
+          var d = res[0].data;
+          if(ok.indexOf(d.status) < 0 && ok.indexOf(d.status) === -1) throw new Error("NOCANCEL");
+          
+          d.status = "ملغي";
+          d.cancelReason = reason || "";
+          d.cancelledBy = "customer";
+
+          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id), {
+            m: "PATCH",
+            h: {Prefer:"return=minimal"},
+            b: {status: "ملغي", data: d}
+          }, tk);
+        });
+      });
     }
     var s=S(),a=window.DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];
     if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));
-    o.status="ملغي"; o.cancelReason = reason || ""; window.DR.save(a); return Promise.resolve();
+    o.status="ملغي"; o.cancelReason = reason || ""; o.cancelledBy="customer"; window.DR.save(a); return Promise.resolve();
   };
 
   window.DR.myOrders = function(){
@@ -284,7 +299,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   };
 
   window.DR.delOrder = function(id){
-    if(window.DR.cloud()) return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}}).catch(function(){return true;});
+    if(window.DR.cloud()) return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return:minimal"}}).catch(function(){return true;});
     window.DR.save(window.DR.orders().filter(function(o){return o.id!=id}));
     return Promise.resolve(true);
   };

@@ -211,10 +211,12 @@ $("bd").querySelectorAll(".q button").forEach(function(b){b.onclick=function(){v
 $("nx").onclick=checkout}
 function checkout(){var t=T[lang],s=tot();if($("dt"))$("dt").textContent=t.dv;
 var go='<option value="">'+t.gv+'</option>'+Object.keys(G).map(function(g){return'<option value="'+g+'">'+(lang=="ar"?g:window.DR.GOVEN[g]||g)+'</option>'}).join("");
-$("bd").innerHTML='<button class="bk2" id="b2">'+t.backc+'</button>'+(window.DR.sess()?'':'<button class="bk2" id="sg" style="padding-top:2px;font-size:.85rem">'+t.hint+'</button>')+'<div class="ls" style="padding:0"><form class="fm" id="fm"><input class="sp" name="name" placeholder="'+t.nm+'" required><input class="sp" name="phone" type="tel" placeholder="'+t.mob+'" pattern="[0-9+]{10,14}" required><select class="sp" name="gov" id="gv" required>'+go+'</select>'+
+var ss=window.DR.sess();
+$("bd").innerHTML='<button class="bk2" id="b2">'+t.backc+'</button>'+(ss?'':'<button class="bk2" id="sg" style="padding-top:2px;font-size:.85rem">'+t.hint+'</button>')+'<div class="ls" style="padding:0"><form class="fm" id="fm"><input class="sp" name="name" placeholder="'+t.nm+'" required><input class="sp" name="phone" type="tel" placeholder="'+t.mob+'" pattern="[0-9+]{10,14}" required>'+(ss?'':'<input class="sp" name="email" type="email" placeholder="'+t.email+'" required>')+'<select class="sp" name="gov" id="gv" required>'+go+'</select>'+
 '<div class="ad2" id="ad"><select name="area" id="ar" required></select><input name="areaOther" id="ao" placeholder="'+t.ao+'" hidden><input name="street" class="sp" placeholder="'+t.st+'" required><input name="bld" placeholder="'+t.bl+'" required><input name="floor" placeholder="'+t.fl+'" required><input name="apt" class="sp" placeholder="'+t.ap+'" required><input name="mark" class="sp" placeholder="'+t.mk+'"></div>'+
 '<input class="sp" name="note" placeholder="'+t.nt+'"></form></div><div class="ck"><div class="tt"><span>'+t.tc+'</span><span>'+s[0]+' '+t.cur+'</span></div><button class="btn p" form="fm">'+t.cf+'</button></div>';
-$("b2").onclick=cartView;var ss=window.DR.sess();if(ss){var fe=$("fm").elements;fe["name"].value=ss.name||"";fe["phone"].value=ss.phone||""}else{var sg=$("sg");if(sg)sg.onclick=function(){accOpen("in")}}
+$("b2").onclick=cartView;
+if(ss){var fe=$("fm").elements;fe["name"].value=ss.name||"";fe["phone"].value=ss.phone||""}else{var sg=$("sg");if(sg)sg.onclick=function(){accOpen("in")}}
 $("gv").onchange=function(){var g=this.value,a=$("ad");if(!g){a.classList.remove("on");return}
 $("ar").innerHTML='<option value="">'+t.sa+'</option>'+G[g].map(function(x,j){return'<option value="'+x+'">'+(lang=="ar"?x:((window.DR.AREAEN[g]||[])[j]||x))+'</option>'}).join("")+'<option value="__o">'+t.oth+'</option>';
 $("ao").hidden=true;$("ao").required=false;a.classList.remove("on");void a.offsetWidth;a.classList.add("on")};
@@ -222,7 +224,8 @@ $("ar").onchange=function(){var o=this.value=="__o";$("ao").hidden=!o;$("ao").re
 $("fm").onsubmit=function(ev){ev.preventDefault();var f=new FormData($("fm")),area=f.get("area")=="__o"?f.get("areaOther"):f.get("area"),s=tot();
 var items=lines().map(function(l){return{name:l.p.n,variant:l.p.v?l.p.v[l.c.v].n:"",pid:l.p.id,vi:l.c.v,qty:l.c.q,price:l.p.p}});
 var addr="شارع "+f.get("street")+" - عقار "+f.get("bld")+" - الدور "+f.get("floor")+" - شقة "+f.get("apt")+(f.get("mark")?" - "+f.get("mark"):"");
-var o={id:"DR-"+Date.now().toString().slice(-6),date:new Date().toISOString(),status:"جديد",name:f.get("name"),phone:f.get("phone"),gov:f.get("gov"),area:area,street:f.get("street"),bld:f.get("bld"),floor:f.get("floor"),apt:f.get("apt"),mark:f.get("mark"),addr:addr,note:f.get("note"),items:items,total:s[0]};
+var emailVal = ss ? ss.email : f.get("email");
+var o={id:"DR-"+Date.now().toString().slice(-6),date:new Date().toISOString(),status:"جديد",name:f.get("name"),phone:f.get("phone"),email:emailVal,gov:f.get("gov"),area:area,street:f.get("street"),bld:f.get("bld"),floor:f.get("floor"),apt:f.get("apt"),mark:f.get("mark"),addr:addr,note:f.get("note"),items:items,total:s[0]};
 window.DR.send(o).then(function(){cart={};upd();if($("dt"))$("dt").textContent=t.dn;$("bd").innerHTML='<div class="ok"><b>✓</b><h3>'+t.ok+'</h3><p style="margin:10px 0 6px;color:#5f7170">'+t.on+'</p><div class="onum">'+o.id+'</div><p style="margin:14px 0 20px;color:#5f7170">'+t.wt+'</p>'+(window.DR.sess()?'<button class="btn p" id="vo" style="margin:0">'+t.vo+'</button>':'')+'</div>';if($("vo"))$("vo").onclick=function(){drawer(false);accOpen("me")}}).catch(function(){ts(t.err)})}}
 function openP(id,nopush){var p=find(id);if(!p)return;cur={p:p,v:0,q:1,m:0};pdR();var pd=$("pd");if(pd)pd.classList.add("on");if(pd)pd.scrollTop=0;document.body.classList.add("lock");if(!nopush)history.pushState(null,"","#p="+id)}
 function closeP(back){var pd=$("pd");if(pd)pd.classList.remove("on");document.body.classList.remove("lock");if(!back&&location.hash.indexOf("#p=")==0)history.back()}

@@ -6,7 +6,6 @@ window.DR.ADMIN_PASS = "dorg2026";
 window.DR.LOGO = "https://dorg-raf-product-gallery.lovable.app/__l5e/assets-v1/866394f5-24f5-44b8-b49c-712b7211b656/logo.png";
 window.DR.HERO = "https://dorg-raf-product-gallery.lovable.app/assets/hero-C6NFzU4O.jpg";
 
-/* ===== ربط صور المنتجات الحقيقية ===== */
 var IMG = {
   p1: ["images/p1-1.webp", "images/p1-2.webp", "images/p1-3.webp"],
   p2: ["images/p2-1.webp"],
@@ -126,8 +125,10 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   var put = function(s){ try{localStorage.removeItem("dr_sess");sessionStorage.removeItem("dr_sess");(s.rem?localStorage:sessionStorage).setItem("dr_sess",JSON.stringify(s))}catch(e){} };
 
   var api = function(p,o,tk){
-    o=o||{};var h={apikey:window.DR.SB.KEY,"Content-Type":"application/json",Authorization:"Bearer "+(tk||window.DR.SB.KEY)};
-    for(var k in (o.h||{}))h[k]=o.h[k];
+    o=o||{};var h={apikey:window.DR.SB.KEY,"Content-Type":"application/json"};
+    if(tk) h.Authorization = "Bearer " + tk;
+    else h.Authorization = "Bearer " + window.DR.SB.KEY;
+    
     return fetch(window.DR.SB.URL+p,{method:o.m||"GET",headers:h,body:o.b?JSON.stringify(o.b):undefined}).then(function(r){
       return r.text().then(function(t){
         var j=null;try{j=JSON.parse(t)}catch(e){}
@@ -195,7 +196,6 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     return api("/auth/v1/resend",{m:"POST",b:{type:"signup",email:e.trim().toLowerCase()}}).then(function(){return 1});
   };
 
-  // تعديل دالة الإلغاء عشان تستقبل السبب
   window.DR.cancelOrder = function(id, reason){
     var ok=["جديد","قيد التجهيز"];
     if(window.DR.cloud()) {
@@ -205,21 +205,16 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     }
     var s=S(),a=window.DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];
     if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));
-    o.status="ملغي";
-    o.cancelReason = reason || "";
-    window.DR.save(a);
-    return Promise.resolve();
+    o.status="ملغي"; o.cancelReason = reason || ""; window.DR.save(a); return Promise.resolve();
   };
 
   window.DR.myOrders = function(){
     var s=S();if(!s)return Promise.resolve([]);
-    if(!window.DR.cloud()) return Promise.resolve(window.DR.orders().filter(function(o){return o.email==s.email}));
-    
     return window.DR.token().then(function(tk){
       var qUrl = "/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc";
-      if(s.uid && s.email) {
+      if(s.uid && s.uid.length > 20 && s.email) {
         qUrl += "&or=(user_id.eq." + s.uid + ",data->>email.eq." + encodeURIComponent(s.email) + ")";
-      } else if(s.uid) {
+      } else if(s.uid && s.uid.length > 20) {
         qUrl += "&user_id=eq." + s.uid;
       } else if(s.email) {
         qUrl += "&data->>email=eq." + encodeURIComponent(s.email);
@@ -231,9 +226,6 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   };
 
   window.DR.allOrders = function(){
-    var local = window.DR.orders();
-    if(!window.DR.cloud()) return Promise.resolve(local);
-    
     return fetch(window.DR.SB.URL + "/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc", {
       headers: {
         "apikey": window.DR.SB.KEY,
@@ -241,26 +233,15 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         "Content-Type": "application/json"
       }
     }).then(function(r){
-      if(!r.ok) throw new Error("فشل في جلب الطلبات");
+      if(!r.ok) throw new Error("فشل في جلب الطلبات من السيرفر");
       return r.json();
     }).then(function(r){
-      var cloudOrders = r.map(function(x){
+      return r.map(function(x){
         var d = x.data || {};
         d.status = x.status;
         d.id = x.id || d.id;
         return d;
       });
-      var all = cloudOrders.concat(local);
-      var unique = [];
-      var map = new Set();
-      all.forEach(function(item){
-        if(!map.has(item.id)){ map.add(item.id); unique.push(item); }
-      });
-      unique.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
-      return unique;
-    }).catch(function(err){
-      console.error(err);
-      return local; 
     });
   };
 
@@ -268,26 +249,20 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
     var s=S();if(s){o.email=s.email;o.uid=s.uid;}
     sendEmailNotification(o, o.status || "جديد");
     
-    var a=window.DR.orders();a.unshift(o);window.DR.save(a);
+    var uidVal = (s && s.uid && s.uid.length > 20) ? s.uid : null;
 
     if(window.DR.cloud()) {
       return window.DR.token().then(function(tk){
-        return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk);
+        return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:uidVal,data:o}},tk);
       }).catch(function(e){
-        console.warn("تم الحفظ محلياً فقط:", e);
-        return true; 
+        console.error("Server save failed:", e);
+        throw new Error("فشل في إرسال الطلب للسيرفر. تأكد من اتصالك بالإنترنت.");
       });
     }
-    return Promise.resolve(true);
+    return Promise.reject(new Error("غير متصل بالسيرفر"));
   };
 
   window.DR.setStatus = function(id, st){
-    var a=window.DR.orders();
-    var targetOrder=null;
-    a.forEach(function(o){ if(o.id==id){ o.status=st; targetOrder=o; } });
-    window.DR.save(a);
-    if(targetOrder) sendEmailNotification(targetOrder, st);
-
     if(window.DR.cloud()){
       return api("/rest/v1/orders?id=eq."+encodeURIComponent(id), {
         m: "PATCH",
@@ -297,14 +272,19 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         return true;
       }).catch(function(e){
         console.error("Server update failed:", e);
-        throw new Error("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات في Supabase.");
+        throw new Error("فشل التحديث على السيرفر.");
       });
     }
+    var a=window.DR.orders();
+    var targetOrder=null;
+    a.forEach(function(o){ if(o.id==id){ o.status=st; targetOrder=o; } });
+    window.DR.save(a);
+    if(targetOrder) sendEmailNotification(targetOrder, st);
     return Promise.resolve(true);
   };
 
   window.DR.delOrder = function(id){
-    if(window.DR.cloud()) return window.DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)}).catch(function(){return true;});
+    if(window.DR.cloud()) return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}}).catch(function(){return true;});
     window.DR.save(window.DR.orders().filter(function(o){return o.id!=id}));
     return Promise.resolve(true);
   };

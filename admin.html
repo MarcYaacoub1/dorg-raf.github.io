@@ -49,7 +49,14 @@ function show(){$("lk").style.display="none";$("wr").classList.add("on");load()}
 if(sessionStorage.dra)show();
 $("out").onclick=function(){sessionStorage.removeItem("dra");DR.logout();location.reload()};
 var O=[];
-function load(){DR.allOrders().then(function(r){O=r;render()}).catch(function(e){alert(e.message)})}
+function load(){
+  DR.allOrders().then(function(r){
+    O=r;
+    render();
+  }).catch(function(e){
+    alert("مشكلة في الاتصال بالسيرفر: " + e.message);
+  });
+}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function render(){var rev=O.filter(function(o){return o.status!="ملغي"}).reduce(function(a,o){return a+o.total},0);
 var today=O.filter(function(o){return new Date(o.date).toDateString()==new Date().toDateString()}).length;
@@ -76,7 +83,7 @@ if(!isCancelled) {
       render();
       alert("تم تحديث الحالة وإرسال إيميل للعميل!");
     }).catch(function(e){
-      alert("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات (RLS).\n" + e.message);
+      alert("فشل التحديث على السيرفر.\n" + e.message);
     });
   };
 }

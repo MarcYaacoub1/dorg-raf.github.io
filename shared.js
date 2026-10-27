@@ -256,4 +256,20 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
           var ord = (res && res.length > 0 && res[0].data) ? res[0].data : {};
           ord.status = st;
           sendEmailNotification(ord, st);
-          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b
+          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st, data: ord}},tk);
+        });
+      });
+    }
+    var a=window.DR.orders();var targetOrder=null;
+    a.forEach(function(o){if(o.id==id){o.status=st;targetOrder=o;}});
+    window.DR.save(a);
+    if(targetOrder) sendEmailNotification(targetOrder, st);
+    return Promise.resolve();
+  };
+
+  window.DR.delOrder = function(id){
+    if(window.DR.cloud()) return window.DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
+    window.DR.save(window.DR.orders().filter(function(o){return o.id!=id}));
+    return Promise.resolve();
+  };
+})();

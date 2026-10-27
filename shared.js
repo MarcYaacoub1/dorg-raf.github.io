@@ -20,23 +20,14 @@ function svgImg(emoji, bg1, bg2, label){
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
 }
 
+/* ===== ربط صور المنتجات الحقيقية ===== */
 var IMG = {
-  p1: [svgImg("🍴","#007979","#25b3b0","Utensil Holder"),
-       svgImg("🥄","#25b3b0","#007979","4 Compartments"),
-       svgImg("🔪","#e37434","#f0a060","Stainless Steel")],
-  p2: [svgImg("🧼","#007979","#25b3b0","Sink Organizer")],
-  p3: [svgImg("📦","#e37434","#f0a060","Storage Box"),
-       svgImg("🧺","#25b3b0","#007979","Foldable"),
-       svgImg("👕","#9bbd72","#c5d99a","Grey Fabric"),
-       svgImg("📐","#b894e0","#d5c0f0","47×28×20")],
-  p4: [svgImg("🛏️","#9bbd72","#c5d99a","Storage Bag")],
-  p5: [svgImg("🐼","#007979","#25b3b0","Panda Lunchbox"),
-       svgImg("🍱","#e37434","#f0a060","Kids Design")],
-  p6: [svgImg("🐑","#e58aa0","#f5b8c5","Sheep – Pink"),
-       svgImg("🦌","#9bbd72","#c5d99a","Reindeer – Green"),
-       svgImg("🦆","#7ba0b5","#a8c5d5","Platypus – Blue"),
-       svgImg("🦛","#b894e0","#d5c0f0","Hippo – Purple"),
-       svgImg("🍽️","#007979","#25b3b0","4 Designs")]
+  p1: ["images/p1-1.webp", "images/p1-2.webp", "images/p1-3.webp"],
+  p2: ["images/p2-1.webp"],
+  p3: ["images/p3-1.webp", "images/p3-2.webp", "images/p3-3.webp", "images/p3-4.webp"],
+  p4: ["images/p4-1.webp"],
+  p5: ["images/p5-1.webp", "images/p5-2.webp"],
+  p6: ["images/p6-1.webp", "images/p6-2.webp", "images/p6-3.webp", "images/p6-4.webp", "images/p6-5.webp"]
 };
 
 window.DR.PRODUCTS = [

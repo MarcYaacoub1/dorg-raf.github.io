@@ -59,19 +59,27 @@ $("em").style.display=L.length?"none":"block";
 $("tb").innerHTML=L.map(function(o,i){return'<tr class="r" data-id="'+esc(o.id)+'" style="animation-delay:'+i*.04+'s"><td>'+esc(o.id)+'</td><td>'+esc(o.name)+'</td><td>'+esc(o.phone)+'</td><td>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</td><td>'+o.total+' ج.م</td><td>'+new Date(o.date).toLocaleString("ar-EG",{dateStyle:"short",timeStyle:"short"})+'</td><td><span class="bd" style="background:'+CL[o.status]+'">'+esc(o.status)+'</span></td></tr>'}).join("");
 document.querySelectorAll("tr.r").forEach(function(r){r.onclick=function(){detail(r.dataset.id)}})}
 function detail(id){var o=O.filter(function(x){return x.id==id})[0];if(!o)return;
-$("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div><div style="display:flex;gap:10px;margin-top:18px"><select id="ss">'+ST.map(function(s){return'<option'+(s==o.status?' selected':'')+'>'+s+'</option>'}).join("")+'</select><button class="bt" id="sv">حفظ</button><button class="bt s" id="dl" style="color:#c0392b;border-color:#c0392b">حذف</button></div>';
+var isCancelled = o.status == "ملغي";
+var cancelReasonHtml = isCancelled && o.cancelReason ? '<div class="row" style="color:#c0392b;background:#fdf0e6;padding:10px;border-radius:8px;margin-top:10px"><span>سبب الإلغاء</span><b>'+esc(o.cancelReason)+'</b></div>' : '';
+var controls = isCancelled 
+  ? '<div style="color:#c0392b;font-weight:700;margin-top:18px;text-align:center;background:#fdf0e6;padding:12px;border-radius:12px">الطلب ملغي من قبل العميل (لا يمكن تعديل الحالة)</div><div style="margin-top:10px"><button class="bt s" id="dl" style="width:100%;color:#c0392b;border-color:#c0392b">حذف الطلب نهائياً</button></div>'
+  : '<div style="display:flex;gap:10px;margin-top:18px"><select id="ss">'+ST.map(function(s){return'<option'+(s==o.status?' selected':'')+'>'+s+'</option>'}).join("")+'</select><button class="bt" id="sv">حفظ</button><button class="bt s" id="dl" style="color:#c0392b;border-color:#c0392b">حذف</button></div>';
+
+$("mc").innerHTML='<h2><span>طلب '+esc(o.id)+'</span><button id="x">×</button></h2><div class="row"><span>الاسم</span><b>'+esc(o.name)+'</b></div><div class="row"><span>الموبايل</span><b><a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a></b></div><div class="row"><span>المحافظة / المنطقة</span><b>'+esc(o.gov)+(o.area?' - '+esc(o.area):'')+'</b></div><div class="row"><span>العنوان</span><b>'+esc(o.addr)+'</b></div>'+(o.note?'<div class="row"><span>ملاحظات</span><b>'+esc(o.note)+'</b></div>':'')+(o.email?'<div class="row"><span>الإيميل</span><b>'+esc(o.email)+'</b></div>':'')+cancelReasonHtml+'<h3 style="margin:18px 0 6px">المنتجات</h3>'+o.items.map(function(i){return'<div class="ln"><span>'+esc(i.name)+(i.variant?' ('+esc(i.variant)+')':'')+' × '+i.qty+'</span><b>'+i.price*i.qty+' ج.م</b></div>'}).join("")+'<div class="row" style="font-size:1.15rem"><span>الإجمالي</span><b>'+o.total+' ج.م</b></div>'+controls;
 $("md").classList.add("on");$("x").onclick=function(){$("md").classList.remove("on")};
-$("sv").onclick=function(){
-  var s=$("ss").value;
-  DR.setStatus(o.id,s).then(function(){
-    o.status=s;
-    $("md").classList.remove("on");
-    render();
-    alert("تم تحديث الحالة وإرسال إيميل للعميل!");
-  }).catch(function(e){
-    alert("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات (RLS).\n" + e.message);
-  });
-};
+if(!isCancelled) {
+  $("sv").onclick=function(){
+    var s=$("ss").value;
+    DR.setStatus(o.id,s).then(function(){
+      o.status=s;
+      $("md").classList.remove("on");
+      render();
+      alert("تم تحديث الحالة وإرسال إيميل للعميل!");
+    }).catch(function(e){
+      alert("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات (RLS).\n" + e.message);
+    });
+  };
+}
 $("dl").onclick=function(){if(confirm("حذف الطلب نهائيًا؟")){DR.delOrder(id).then(function(){O=O.filter(function(x){return x.id!=id});$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})}}}
 $("md").onclick=function(e){if(e.target==this)this.classList.remove("on")};
 $("q").oninput=$("fs").onchange=render;$("rf").onclick=load;

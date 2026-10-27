@@ -230,7 +230,7 @@ function pdR(){var t=T[lang],p=cur.p,y=tx(p),im=p.imgs[cur.m];
 var pd=$("pd");if(!pd)return;
 pd.innerHTML='<div class="pt"><button class="bk" id="pk">'+t.backp+'</button><button class="cb" id="pc">🛒 '+t.cart+' (<span class="cn">'+tot()[1]+'</span>)</button></div><div class="pw"><div><div class="mn"><img src="'+im+'" alt="" key="'+cur.m+'"></div><div class="th">'+(p.imgs.length>1?p.imgs.map(function(s,i){return'<img src="'+s+'" class="'+(i==cur.m?'on':'')+'" data-i="'+i+'" alt="">'}).join(""):'')+'</div></div><div class="pf"><div class="ct">'+y.cn+'</div><h1>'+y.n+'</h1><div class="pp">'+priceH(p)+(disc(p)?'<span class="off">'+t.save(disc(p))+'</span>':'')+'</div>'+
 (p.v?'<div style="font-weight:700;margin-bottom:8px">'+t.design+'</div><div class="vs">'+p.v.map(function(v,i){return'<button class="'+(i==cur.v?'on':'')+'" data-v="'+i+'"><i style="background:'+window.DR.VC[i]+'"></i>'+y.v[i]+'</button>'}).join("")+'</div>':'')+
-'<p class="d">'+y.d+'</p><ul>'+y.f.map(function(x){return'<li>'+x+'</li>'}).join("")+'</ul>'+(y.s?'<div class="sz">📐 '+y.s+'</div>':'')+
+'<p class="d">'+y.d+'</p><ul>'+y.f.map(function(x){return'<li>'+x+'</li>'}).join('')+'</ul>'+(y.s?'<div class="sz">📐 '+y.s+'</div>':'')+
 '<div class="qr"><div class="qb"><button id="qm">−</button><span>'+cur.q+'</span><button id="qp">+</button></div><button class="btn p" id="pa">'+t.addc+' · '+p.p*cur.q+' '+t.cur+'</button></div></div></div>';
 var pk=$("pk"),pc=$("pc");if(pk)pk.onclick=function(){closeP()};if(pc)pc.onclick=openCart;
 pd.querySelectorAll(".th img").forEach(function(i){i.onclick=function(){cur.m=+i.dataset.i;pdR()}});
@@ -278,7 +278,6 @@ if(window.DR && window.DR.oauth) {
 if(location.hash.indexOf("#p=")==0&&find(location.hash.slice(3)))openP(location.hash.slice(3),true);
 addEventListener("scroll",function(){var hd=$("hd");if(hd)hd.classList.toggle("s",scrollY>40)});
 
-// ضمان إزالة شاشة التحميل نهائياً وبشكل آمن مهما حصل
 function go(){document.body.classList.add("go")}
 window.addEventListener("load",function(){setTimeout(go,800)});
 setTimeout(go,2000);

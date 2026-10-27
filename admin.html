@@ -69,7 +69,7 @@ $("sv").onclick=function(){
     render();
     alert("تم تحديث الحالة وإرسال إيميل للعميل!");
   }).catch(function(e){
-    alert("حصل خطأ: "+e.message);
+    alert("فشل التحديث على السيرفر. تأكد من إعدادات الصلاحيات (RLS).\n" + e.message);
   });
 };
 $("dl").onclick=function(){if(confirm("حذف الطلب نهائيًا؟")){DR.delOrder(id).then(function(){O=O.filter(function(x){return x.id!=id});$("md").classList.remove("on");render()}).catch(function(e){alert(e.message)})}}}

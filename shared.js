@@ -6,20 +6,6 @@ window.DR.ADMIN_PASS = "dorg2026";
 window.DR.LOGO = "https://dorg-raf-product-gallery.lovable.app/__l5e/assets-v1/866394f5-24f5-44b8-b49c-712b7211b656/logo.png";
 window.DR.HERO = "https://dorg-raf-product-gallery.lovable.app/assets/hero-C6NFzU4O.jpg";
 
-/* ===== صور SVG مدمجة — مضمونة تظهر دائمًا ===== */
-function svgImg(emoji, bg1, bg2, label){
-  var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">'
-    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
-    + '<stop offset="0" stop-color="'+bg1+'"/><stop offset="1" stop-color="'+bg2+'"/>'
-    + '</linearGradient></defs>'
-    + '<rect width="400" height="400" fill="url(#g)"/>'
-    + '<circle cx="200" cy="170" r="90" fill="#ffffff33"/>'
-    + '<text x="200" y="205" font-size="120" text-anchor="middle" dominant-baseline="middle">'+emoji+'</text>'
-    + '<text x="200" y="320" font-size="22" fill="#ffffffdd" text-anchor="middle" font-family="Cairo,sans-serif" font-weight="700">'+label+'</text>'
-    + '</svg>';
-  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
-}
-
 /* ===== ربط صور المنتجات الحقيقية ===== */
 var IMG = {
   p1: ["images/p1-1.webp", "images/p1-2.webp", "images/p1-3.webp"],
@@ -122,7 +108,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   var sendEmailNotification = function(orderData, newStatus){
     try {
       if(typeof emailjs === 'undefined') return;
-      var targetEmail = orderData.email || "marcyaacoub2020@gmail.com";
+      var targetEmail = orderData.email || "marcyaacoub2020@gmail.com"; 
       var templateParams = {
         to_email: targetEmail,
         to_name: orderData.name || "العميل",
@@ -130,13 +116,15 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
         status: newStatus || orderData.status || "جديد",
         total: orderData.total
       };
-      emailjs.send("service_r8zkdxo", "template_0k0g2jp", templateParams).catch(function(err){});
+      emailjs.send("service_r8zkdxo", "template_0k0g2jp", templateParams).catch(function(err){
+        console.log("EmailJS Error:", err);
+      });
     } catch(e) {}
   };
 
   var S = function(){ try{return JSON.parse(localStorage.getItem("dr_sess")||sessionStorage.getItem("dr_sess")||"null")}catch(e){return null} };
   var put = function(s){ try{localStorage.removeItem("dr_sess");sessionStorage.removeItem("dr_sess");(s.rem?localStorage:sessionStorage).setItem("dr_sess",JSON.stringify(s))}catch(e){} };
-
+  
   var api = function(p,o,tk){
     o=o||{};var h={apikey:window.DR.SB.KEY,"Content-Type":"application/json",Authorization:"Bearer "+(tk||window.DR.SB.KEY)};
     for(var k in (o.h||{}))h[k]=o.h[k];
@@ -162,7 +150,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   };
 
   var dg = function(x){ return String(x).replace(/\D/g,"").slice(-10); };
-
+  
   window.DR.login = function(e,p,rem){
     e=e.trim().toLowerCase();
     if(e.indexOf("@")<0){
@@ -235,7 +223,15 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   window.DR.send = function(o){
     var s=S();if(s){o.email=s.email;o.uid=s.uid;}
     sendEmailNotification(o, o.status || "جديد");
-    if(window.DR.cloud()) return window.DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk)});
+    if(window.DR.cloud()) {
+      return window.DR.token().then(function(tk){
+        return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk);
+      }).catch(function(e){
+        // لو حصلت مشكلة في السيرفر، هنحفظها محلياً عشان متضيعش
+        var a=window.DR.orders();a.unshift(o);window.DR.save(a);
+        throw e;
+      });
+    }
     var a=window.DR.orders();a.unshift(o);window.DR.save(a);
     return Promise.resolve();
   };

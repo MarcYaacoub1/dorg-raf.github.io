@@ -63,36 +63,7 @@ DR.EN={
 "panda-lunchbox":{n:"Panda Kids Lunch Box with Separate Compartments",cn:"School Corner",d:"A lunch box with a lovable panda design, separate compartments to organize food, a spoon and a small container included, and side latches for a tight seal.",f:["Separate compartments","Spoon and small container included","Side latches for a tight seal","Fun panda design"],s:""},
 "kids-lunchbox":{n:"Kids Lunch Box with Compartments & Latches – Choose Your Design",cn:"School Corner",v:["Sheep – Pink","Reindeer – Green","Platypus – Blue","Hippo – Purple"],d:"A lunch box with fun cartoon designs and colors, inner compartments, a small container plus fork and spoon, and side latches that keep food secure.",f:["4 designs and colors to choose from","Inner compartments and small container","Fork and spoon included","Secure side latches"],s:""}};
 DR.GOVEN={"القاهرة":"Cairo","الجيزة":"Giza","الإسكندرية":"Alexandria","القليوبية":"Qalyubia","الشرقية":"Sharqia","الدقهلية":"Dakahlia","البحيرة":"Beheira","الغربية":"Gharbia","المنوفية":"Monufia","كفر الشيخ":"Kafr El Sheikh","دمياط":"Damietta","بورسعيد":"Port Said","الإسماعيلية":"Ismailia","السويس":"Suez","الفيوم":"Fayoum","بني سويف":"Beni Suef","المنيا":"Minya","أسيوط":"Assiut","سوهاج":"Sohag","قنا":"Qena","الأقصر":"Luxor","أسوان":"Aswan","البحر الأحمر":"Red Sea","الوادي الجديد":"New Valley","مطروح":"Matrouh","شمال سيناء":"North Sinai","جنوب سيناء":"South Sinai"};
-
-DR.AREAEN={
-"القاهرة":["Nasr City","Heliopolis","New Cairo","Rehab","Madinaty","El Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shobra","Ein Shams","El Matareya","El Nozha","El Obour","15 May","Badr"],
-"الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek Al Ahram","Imbaba","Bulaq Dakrour","Omraneya","Warraq","Badrashein","Saff","Oseem"],
-"الإسكندرية":["Smouha","Sidi Gaber","Miami","Montaza","Agamy","Asafra","Cleopatra","Moharam Bek","Ibrahimiya","Borg El Arab","Dekheila","Abu Qir","Sidi Bishr","Wardian","Karmouz"],
-"القليوبية":["Benha","Shobra El Kheima","Qanater الخيرية","Khanka","Qalyoub","Khصوص","Kafr Shukr","Toukh","Shibin El Qanater"],
-"الشرقية":["Zagazig","10th of Ramadan","Belbeis","Minya El Qamh","Abu Hammad","Faqus","Hehia","Dيرب نجم","Abu Kabir","Husseiniya","Kafr Saqr","Mashtoul El Souq"],
-"الدقهلية":["Mansoura","Mit Ghamr","Talkha","Aga","Sinblawin","Dikirnis","Sherbin","Belqas","Manzala","Gamasa"],
-"البحيرة":["Damanhour","Kafr El Dawwar","Rashid","Edكو","Abu Hummus","Kom Hamada","Delengat","Itay El Barud","Wadi El Natrun","Shubrakhit"],
-"الغربية":["Tanta","El Mahalla El Kubra","Kafr El Zayat","Zefta","Samanta","Basyoun","Smanoud","Qutour"],
-"المنوفية":["Shibin El Kom","Sadat City","Menouf","Ashmoun","Bagour","Quweisna","Berkat El Saba","Tala","Shohada"],
-"كفر الشيخ":["Kafr El Sheikh","Desouq","Baltim","Fouwa","Metoubes","Sidi Salem","Bella","Hamoul","Qallin","Riyadh"],
-"دمياط":["Damietta","New Damietta","Ras El Bar","Farisكور","Kafr Saad","Zarqa","Kafr El Batikh"],
-"بورسعيد":["Port Fouad","El Shark","El Arab","El Dawahi","El Manakh","El Zohour"],
-"الإسماعيلية":["Ismailia","Fayed","East Kantara","West Kantara","El Tall El Kebir","Abu Suwair","Qassasin"],
-"السويس":["Suez","El Arbaeen","Ataqa","Janain","Faisal"],
-"الفيوم":["Fayoum","Sinnuris","Itsa","Tamiya","Ibsheway","Youssef El Seddik"],
-"بني سويف":["Beni Suef","Wasta","Naser","Ehnasia","Biba","Fashn","Somasta"],
-"المنيا":["Minya","Mallawi","Maghagha","Bani Mazar","Samalout","Abu Qurqas","Adwa","Matay","Deir Mawas"],
-"أسيوط":["Assiut","Dayrout","Qusiya","Abnoub","Manfalut","Abutig","Sedfa","Ghanayem","Fateh"],
-"سوهاج":["Sohag","Akhmim","Gerga","Tahta","Maragha","Baliana","Dar El Salam","Juhayna","Monshat"],
-"قنا":["قنا","نجع حمادي","دشنا","قوص","أبوتشت","فرشوط","نقادة"],
-"الأقصر":["Luxor","Esna","Armant","Tod","Bayadiya","Qarna"],
-"أسوان":["Aswan","Kom Ombo","Edfu","Daraw","Nasr Al Nuba","Abu Simbel"],
-"البحر الأحمر":["Hurghada","Safaga","Quseir","Marsa Alam","Ras Ghareb","El Gouna"],
-"الوادي الجديد":["Kharga","Dakhla","Farafra","Paris","Balat"],
-"مطروح":["Marsa Matrouh","El Alamein","El Hamam","Dabaa","Siwa","Nagila","Sidi Barrani"],
-"شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasana","Nakhl"],
-"جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"]
-};
+DR.AREAEN={"القاهرة":["Nasr City","Heliopolis","New Cairo","Rehab","Madinaty","El Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shobra","Ein Shams","Mataria","El Nozha","El Obour","15 May","Badr"],"الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek Al Ahram","Imbaba","Bulaq Dakrour","Omraneya","Warraq","Badrashein","Saff","Oseem"],"الإسكندرية":["Smouha","Sidi Gaber","Miami","Montaza","Agamy","Asafra","Cleopatra","Moharam Bek","Ibrahimiya","Borg El Arab","Dekheila","Abu Qir","Sidi Bishr","Werdian","Karmous"],"القليوبية":["Benha","Shobra El Kheima","Qanater","Khanka","Qalyoub","Khصوص","Kafr Shukr","Toukh","Shibin El Qanater"],"الشرقية":["Zagazig","10th of Ramadan","Belbeis","Minya El Qamh","Abu Hammad","Faquq","Hehia","Diarb Negm","Abu Kebir","Husseiniya","Kafr Saqr","Mashtoul El Souq"],"الدقهلية":["Mansoura","Mit Ghamr","Talkha","Aga","Sinbillawin","Dikirnis","Sherbin","Belqas","Manzala","Gamasa"],"البحيرة":["Damanhour","Kafr El Dawwar","Rosetta","Edكو","Abu Hummus","Kom Hamada","Dallangat","Itay El Baroud","Wadi El Natrun","Shubrakhit"],"الغربية":["Tanta","El Mahalla El Kubra","Kafr El Zayat","Zefta","Santa","Basyoun","Samannoud","Qutour"],"المنوفية":["Shibin El Kom","Sadat City","Menouf","Ashmoun","Bagour","Qويسنا","Berkat El Saba","Tala","Shohada"],"كفر الشيخ":["Kafr El Sheikh","Desouk","Baltim","Fouah","Metoubes","Sidi Salem","Bela","Hamoul","Qallin","Riyadh"],"دمياط":["Damietta","New Damietta","Ras El Bar","Farsكور","Kafr Saad","Zarqa","Kafr El Batikh"],"بورسعيد":["Port Fouad","El Shark","El Arab","El Dawahy","El Manakh","El Zohour"],"الإسماعيلية":["Ismailia","Fayed","East Qantara","West Qantara","El Tall El Kebir","Abu Suwir","Qassasin"],"السويس":["Suez","Arbaeen","Ataka","Janain","Faisal"],"الفيوم":["Fayoum","Sennuris","Itsa","Tamiya","Ibshoway","Youssef El Seddik"],"بني سويف":["Beni Suef","Wasta","Naser","Ehnasia","Beba","Fashn","Samasta"],"المنيا":["Minya","Mallawi","Maghagha","Bani Mazar","Samalut","Abu Qurqas","Adwa","Matay","Deir Mawas"],"أسيوط":["Assiut","Derout","Qusiya","Abnoub","Manfalut","Abutig","Sedfa","Ghanayem","Fateh"],"سوهاج":["Sohag","Akhmim","Gerga","Tahta","Maragha","Baliana","Dar El Salam","Juhayna","Mansha"],"قنا":["Qena","Nag Hammadi","Dishna","Qus","Abul Tesht","Farshout","Naqada"],"الأقصر":["Luxor","Esna","Armant","Tod","Bayadiya","Qurna"],"أسوان":["Aswan","Kom Ombo","Edfu","Daraw","Nasr El Nuba","Abu Simbel"],"البحر الأحمر":["Hurghada","Safaga","Quseir","Marsa Alam","Ras Ghareb","El Gouna"],"الوادي الجديد":["Kharga","Dakhla","Farafra","Paris","Balat"],"مطروح":["Marsa Matrouh","El Alamein","El Hammam","Dabaa","Siwa","Nagila","Sidi Barrani"],"شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasana","Nakhl"],"جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"};
 
 DR.SB={
   URL:"https://mpinhsjvkcqcmebiwqmb.supabase.co",
@@ -155,7 +126,7 @@ DR.cancelOrder=function(id){var ok=["جديد","قيد التجهيز"];
 var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})})};
 DR.myOrders=function(){var s=S();if(!s)return Promise.resolve([]);
  return DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}))};
-DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})}):Promise.resolve(DR.orders())};
+DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})}):Promise.resolve(DR.orders())};
 DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
  sendEmailNotification(o, o.status || "جديد");
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk)});
@@ -163,14 +134,13 @@ DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
  return Promise.resolve()};
 DR.setStatus=function(id,st){
  if(DR.cloud()){
-   return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},DR.SB.KEY).then(function(res){
-     if(res && res.length > 0 && res[0].data){
-       var ord = res[0].data;
+   return DR.token().then(function(tk){
+     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
+       var ord = (res && res.length > 0 && res[0].data) ? res[0].data : {};
        ord.status = st;
        sendEmailNotification(ord, st);
-     }
-   }).catch(function(){}).then(function(){
-     return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},DR.SB.KEY);
+       return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st, data: ord}},tk);
+     });
    });
  }
  var a=DR.orders();var targetOrder=null;
@@ -178,6 +148,6 @@ DR.setStatus=function(id,st){
  DR.save(a);
  if(targetOrder) sendEmailNotification(targetOrder, st);
  return Promise.resolve()};
-DR.delOrder=function(id){if(DR.cloud())return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},DR.SB.KEY);
+DR.delOrder=function(id){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
  DR.save(DR.orders().filter(function(o){return o.id!=id}));return Promise.resolve()};
 })();

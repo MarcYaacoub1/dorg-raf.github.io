@@ -64,6 +64,36 @@ DR.EN={
 "kids-lunchbox":{n:"Kids Lunch Box with Compartments & Latches – Choose Your Design",cn:"School Corner",v:["Sheep – Pink","Reindeer – Green","Platypus – Blue","Hippo – Purple"],d:"A lunch box with fun cartoon designs and colors, inner compartments, a small container plus fork and spoon, and side latches that keep food secure.",f:["4 designs and colors to choose from","Inner compartments and small container","Fork and spoon included","Secure side latches"],s:""}};
 DR.GOVEN={"القاهرة":"Cairo","الجيزة":"Giza","الإسكندرية":"Alexandria","القليوبية":"Qalyubia","الشرقية":"Sharqia","الدقهلية":"Dakahlia","البحيرة":"Beheira","الغربية":"Gharbia","المنوفية":"Monufia","كفر الشيخ":"Kafr El Sheikh","دمياط":"Damietta","بورسعيد":"Port Said","الإسماعيلية":"Ismailia","السويس":"Suez","الفيوم":"Fayoum","بني سويف":"Beni Suef","المنيا":"Minya","أسيوط":"Assiut","سوهاج":"Sohag","قنا":"Qena","الأقصر":"Luxor","أسوان":"Aswan","البحر الأحمر":"Red Sea","الوادي الجديد":"New Valley","مطروح":"Matrouh","شمال سيناء":"North Sinai","جنوب سيناء":"South Sinai"};
 
+DR.AREAEN={
+"القاهرة":["Nasr City","Heliopolis","New Cairo","Rehab","Madinaty","El Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shobra","Ein Shams","El Matareya","El Nozha","El Obour","15 May","Badr"],
+"الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek Al Ahram","Imbaba","Bulaq Dakrour","Omraneya","Warraq","Badrashein","Saff","Oseem"],
+"الإسكندرية":["Smouha","Sidi Gaber","Miami","Montaza","Agamy","Asafra","Cleopatra","Moharam Bek","Ibrahimiya","Borg El Arab","Dekheila","Abu Qir","Sidi Bishr","Wardian","Karmouz"],
+"القليوبية":["Benha","Shobra El Kheima","Qanater الخيرية","Khanka","Qalyoub","Khصوص","Kafr Shukr","Toukh","Shibin El Qanater"],
+"الشرقية":["Zagazig","10th of Ramadan","Belbeis","Minya El Qamh","Abu Hammad","Faqus","Hehia","Dيرب نجم","Abu Kabir","Husseiniya","Kafr Saqr","Mashtoul El Souq"],
+"الدقهلية":["Mansoura","Mit Ghamr","Talkha","Aga","Sinblawin","Dikirnis","Sherbin","Belqas","Manzala","Gamasa"],
+"البحيرة":["Damanhour","Kafr El Dawwar","Rashid","Edكو","Abu Hummus","Kom Hamada","Delengat","Itay El Barud","Wadi El Natrun","Shubrakhit"],
+"الغربية":["Tanta","El Mahalla El Kubra","Kafr El Zayat","Zefta","Samanta","Basyoun","Smanoud","Qutour"],
+"المنوفية":["Shibin El Kom","Sadat City","Menouf","Ashmoun","Bagour","Quweisna","Berkat El Saba","Tala","Shohada"],
+"كفر الشيخ":["Kafr El Sheikh","Desouq","Baltim","Fouwa","Metoubes","Sidi Salem","Bella","Hamoul","Qallin","Riyadh"],
+"دمياط":["Damietta","New Damietta","Ras El Bar","Farisكور","Kafr Saad","Zarqa","Kafr El Batikh"],
+"بورسعيد":["Port Fouad","El Shark","El Arab","El Dawahi","El Manakh","El Zohour"],
+"الإسماعيلية":["Ismailia","Fayed","East Kantara","West Kantara","El Tall El Kebir","Abu Suwair","Qassasin"],
+"السويس":["Suez","El Arbaeen","Ataqa","Janain","Faisal"],
+"الفيوم":["Fayoum","Sinnuris","Itsa","Tamiya","Ibsheway","Youssef El Seddik"],
+"بني سويف":["Beni Suef","Wasta","Naser","Ehnasia","Biba","Fashn","Somasta"],
+"المنيا":["Minya","Mallawi","Maghagha","Bani Mazar","Samalout","Abu Qurqas","Adwa","Matay","Deir Mawas"],
+"أسيوط":["Assiut","Dayrout","Qusiya","Abnoub","Manfalut","Abutig","Sedfa","Ghanayem","Fateh"],
+"سوهاج":["Sohag","Akhmim","Gerga","Tahta","Maragha","Baliana","Dar El Salam","Juhayna","Monshat"],
+"قنا":["قنا","نجع حمادي","دشنا","قوص","أبوتشت","فرشوط","نقادة"],
+"الأقصر":["Luxor","Esna","Armant","Tod","Bayadiya","Qarna"],
+"أسوان":["Aswan","Kom Ombo","Edfu","Daraw","Nasr Al Nuba","Abu Simbel"],
+"البحر الأحمر":["Hurghada","Safaga","Quseir","Marsa Alam","Ras Ghareb","El Gouna"],
+"الوادي الجديد":["Kharga","Dakhla","Farafra","Paris","Balat"],
+"مطروح":["Marsa Matrouh","El Alamein","El Hamam","Dabaa","Siwa","Nagila","Sidi Barrani"],
+"شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasana","Nakhl"],
+"جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"]
+};
+
 DR.SB={
   URL:"https://mpinhsjvkcqcmebiwqmb.supabase.co",
   KEY:"sb_publishable_x69_VBIKG3OsjHSenUc7gw_OuCZSAE6",
@@ -77,8 +107,9 @@ if(typeof emailjs !== 'undefined'){
 }
 var sendEmailNotification=function(orderData, newStatus){
   if(typeof emailjs === 'undefined') return;
+  var targetEmail = orderData.email || "marcyaacoub2020@gmail.com";
   var templateParams = {
-    to_email: orderData.email || "marcyaacoub2020@gmail.com",
+    to_email: targetEmail,
     to_name: orderData.name || "العميل",
     order_id: orderData.id,
     status: newStatus || orderData.status || "جديد",
@@ -119,29 +150,27 @@ DR.updateProfile=function(n,ph){var s=S();if(!s)return Promise.reject(new Error(
 DR.verify=function(e,code,rem){return api("/auth/v1/verify",{m:"POST",b:{type:"signup",email:e.trim().toLowerCase(),token:String(code).replace(/\s/g,"")}}).then(function(j){return mk(j,rem)},function(){throw new Error("CODE")})};
 DR.resend=function(e){return api("/auth/v1/resend",{m:"POST",b:{type:"signup",email:e.trim().toLowerCase()}}).then(function(){return 1})};
 DR.cancelOrder=function(id){var ok=["جديد","قيد التجهيز"];
- if(DR.cloud())return DR.token().token().then(function(tk){return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id}},tk)}).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
+ if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/rpc/cancel_order",{m:"POST",b:{oid:id}},tk)}).then(function(r){if(r!==true)throw new Error("NOCANCEL")});
  var s=S(),a=DR.orders(),o=a.filter(function(x){return x.id==id&&s&&x.email==s.email})[0];if(!o||ok.indexOf(o.status)<0)return Promise.reject(new Error("NOCANCEL"));o.status="ملغي";DR.save(a);return Promise.resolve()};
 var q=function(extra){return DR.token().then(function(tk){return api("/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc"+(extra||""),{},tk)}).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})})};
 DR.myOrders=function(){var s=S();if(!s)return Promise.resolve([]);
  return DR.cloud()?q("&user_id=eq."+s.uid):Promise.resolve(DR.orders().filter(function(o){return o.email==s.email}))};
-DR.allOrders=function(){return DR.cloud()?q():Promise.resolve(DR.orders())};
+DR.allOrders=function(){return DR.cloud()?api("/rest/v1/orders?select=id,status,created_at,data&order=created_at.desc",{},DR.SB.KEY).then(function(r){return r.map(function(x){var d=x.data||{};d.status=x.status;d.id=x.id||d.id;return d})}):Promise.resolve(DR.orders())};
 DR.send=function(o){var s=S();if(s){o.email=s.email;o.uid=s.uid}
- sendEmailNotification(o, o.status || "جديد التنفيذ");
+ sendEmailNotification(o, o.status || "جديد");
  if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders",{m:"POST",h:{Prefer:"return=minimal"},b:{id:o.id,status:o.status,total:o.total,user_id:s?s.uid:null,data:o}},tk)});
  var a=DR.orders();a.unshift(o);DR.save(a);
  return Promise.resolve()};
 DR.setStatus=function(id,st){
  if(DR.cloud()){
-   return DR.token().then(function(tk){
-     return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},tk).then(function(res){
-       if(res && res.length > 0 && res[0].data){
-         var ord = res[0].data;
-         ord.status = st;
-         sendEmailNotification(ord, st);
-       }
-     }).catch(function(){}).then(function(){
-       return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},tk);
-     });
+   return api("/rest/v1/orders?select=data&id=eq."+encodeURIComponent(id),{},DR.SB.KEY).then(function(res){
+     if(res && res.length > 0 && res[0].data){
+       var ord = res[0].data;
+       ord.status = st;
+       sendEmailNotification(ord, st);
+     }
+   }).catch(function(){}).then(function(){
+     return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st}},DR.SB.KEY);
    });
  }
  var a=DR.orders();var targetOrder=null;
@@ -149,6 +178,6 @@ DR.setStatus=function(id,st){
  DR.save(a);
  if(targetOrder) sendEmailNotification(targetOrder, st);
  return Promise.resolve()};
-DR.delOrder=function(id){if(DR.cloud())return DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
+DR.delOrder=function(id){if(DR.cloud())return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},DR.SB.KEY);
  DR.save(DR.orders().filter(function(o){return o.id!=id}));return Promise.resolve()};
 })();

@@ -6,23 +6,56 @@ window.DR.ADMIN_PASS = "dorg2026";
 window.DR.LOGO = "https://dorg-raf-product-gallery.lovable.app/__l5e/assets-v1/866394f5-24f5-44b8-b49c-712b7211b656/logo.png";
 window.DR.HERO = "https://dorg-raf-product-gallery.lovable.app/assets/hero-C6NFzU4O.jpg";
 
+/* ===== صور SVG مدمجة — مضمونة تظهر دائمًا ===== */
+function svgImg(emoji, bg1, bg2, label){
+  var s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">'
+    + '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+    + '<stop offset="0" stop-color="'+bg1+'"/><stop offset="1" stop-color="'+bg2+'"/>'
+    + '</linearGradient></defs>'
+    + '<rect width="400" height="400" fill="url(#g)"/>'
+    + '<circle cx="200" cy="170" r="90" fill="#ffffff33"/>'
+    + '<text x="200" y="205" font-size="120" text-anchor="middle" dominant-baseline="middle">'+emoji+'</text>'
+    + '<text x="200" y="320" font-size="22" fill="#ffffffdd" text-anchor="middle" font-family="Cairo,sans-serif" font-weight="700">'+label+'</text>'
+    + '</svg>';
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s);
+}
+
+var IMG = {
+  p1: [svgImg("🍴","#007979","#25b3b0","Utensil Holder"),
+       svgImg("🥄","#25b3b0","#007979","4 Compartments"),
+       svgImg("🔪","#e37434","#f0a060","Stainless Steel")],
+  p2: [svgImg("🧼","#007979","#25b3b0","Sink Organizer")],
+  p3: [svgImg("📦","#e37434","#f0a060","Storage Box"),
+       svgImg("🧺","#25b3b0","#007979","Foldable"),
+       svgImg("👕","#9bbd72","#c5d99a","Grey Fabric"),
+       svgImg("📐","#b894e0","#d5c0f0","47×28×20")],
+  p4: [svgImg("🛏️","#9bbd72","#c5d99a","Storage Bag")],
+  p5: [svgImg("🐼","#007979","#25b3b0","Panda Lunchbox"),
+       svgImg("🍱","#e37434","#f0a060","Kids Design")],
+  p6: [svgImg("🐑","#e58aa0","#f5b8c5","Sheep – Pink"),
+       svgImg("🦌","#9bbd72","#c5d99a","Reindeer – Green"),
+       svgImg("🦆","#7ba0b5","#a8c5d5","Platypus – Blue"),
+       svgImg("🦛","#b894e0","#d5c0f0","Hippo – Purple"),
+       svgImg("🍽️","#007979","#25b3b0","4 Designs")]
+};
+
 window.DR.PRODUCTS = [
-  {id:"kitchen-utensil-holder",n:"حامل ومنظم أدوات المطبخ ستانلس ستيل 4 أقسام",c:"home",cn:"أدوات منزلية",p:199,o:350,imgs:["images/p1-1.webp","images/p1-2.webp","images/p1-3.webp"],
+  {id:"kitchen-utensil-holder",n:"حامل ومنظم أدوات المطبخ ستانلس ستيل 4 أقسام",c:"home",cn:"أدوات منزلية",p:199,o:350,imgs:IMG.p1,
    d:"منظم أدوات مائدة أنيق بهيكل ستانلس ستيل مقاوم للصدأ، بـ 4 أقسام داخلية لفصل الشوك والملاعق والسكاكين، مع صينية تصريف تحافظ على جفاف أدواتك.",
    f:["4 أقسام داخلية للفصل والتنظيم","صينية تصريف للمياه الزائدة","هيكل خارجي ستانلس ستيل متين ومقاوم للصدأ","قاعدة بلاستيكية تجمع المياه","أقدام مانعة للانزلاق"],s:"المقاس: 18 × 8.7 × 13 سم"},
-  {id:"kitchen-drainer",n:"مصفاة وحامل أدوات مطبخ ستانلس ستيل بقاعدة لتجميع المياه",c:"home",cn:"أدوات منزلية",p:299,o:450,imgs:["images/p2-1.webp"],
+  {id:"kitchen-drainer",n:"مصفاة وحامل أدوات مطبخ ستانلس ستيل بقاعدة لتجميع المياه",c:"home",cn:"أدوات منزلية",p:299,o:450,imgs:IMG.p2,
    d:"منظم حوض متعدد الاستخدامات: موزع صابون بمضخة، مكان للإسفنجة والليفة، وفتحة لفرشاة الأطباق، مع قاعدة تجمع المياه وتحافظ على نظافة الحوض.",
    f:["موزع صابون بمضخة","حامل للإسفنجة والليفة","مكان لفرشاة الأطباق","قاعدة لتجميع المياه","هيكل ستانلس ستيل"],s:""},
-  {id:"fabric-storage-box",n:"بوكس تنظيم وتخزين قماش قابل للطي 47×28×20 سم – رمادي",c:"storage",cn:"تنظيم وتخزين",p:120,o:399,imgs:["images/p3-1.webp","images/p3-2.webp","images/p3-3.webp","images/p3-4.webp"],
+  {id:"fabric-storage-box",n:"بوكس تنظيم وتخزين قماش قابل للطي 47×28×20 سم – رمادي",c:"storage",cn:"تنظيم وتخزين",p:120,o:399,imgs:IMG.p3,
    d:"بوكس تخزين من القماش المتين بمقابض قوية وقاعدة صلبة، يتطوى بسهولة لما متحتاجوش، ومثالي لترتيب الملابس والأغراض في الدواليب والرفوف.",
    f:["قماش متين بملمس أنيق","مقابض قوية","إطار وقاعدة صلبة تحافظ على الشكل","قابل للطي لتوفير المساحة","اللون: رمادي"],s:"المقاس: 47 × 28 × 20 سم"},
-  {id:"clothes-storage-bag",n:"منظم تخزين ملابس وبطاطين قماش بنافذة شفافة ومقابض – 55×35×25 سم",c:"storage",cn:"تنظيم وتخزين",p:149,o:299,imgs:["images/p4-1.webp"],
+  {id:"clothes-storage-bag",n:"منظم تخزين ملابس وبطاطين قماش بنافذة شفافة ومقابض – 55×35×25 سم",c:"storage",cn:"تنظيم وتخزين",p:149,o:299,imgs:IMG.p4,
    d:"منظم واسع لتخزين الملابس والبطاطين والمفروشات، بنافذة شفافة تعرّفك المحتوى من غير ما تفتحه، ومقابض لسهولة الحمل.",
    f:["نافذة شفافة لرؤية المحتوى","سحّاب لإغلاق محكم","مقابض لسهولة الحمل","مناسب للملابس والبطاطين"],s:"المقاس: 55 × 35 × 25 سم"},
-  {id:"panda-lunchbox",n:"لانش بوكس باندا للأطفال بأقسام منفصلة",c:"school",cn:"ركن المدرسة",p:399,o:499,imgs:["images/p5-1.webp","images/p5-2.webp"],
+  {id:"panda-lunchbox",n:"لانش بوكس باندا للأطفال بأقسام منفصلة",c:"school",cn:"ركن المدرسة",p:399,o:499,imgs:IMG.p5,
    d:"لانش بوكس بتصميم الباندا المحبب للأطفال، بأقسام منفصلة لتنظيم الأكل، ويجي معاه ملعقة وعلبة صغيرة، وأقفال جانبية للإغلاق المحكم.",
    f:["أقسام منفصلة لتنظيم الطعام","ملعقة وعلبة صغيرة مرفقة","أقفال جانبية للإغلاق المحكم","تصميم باندا مرح"],s:""},
-  {id:"kids-lunchbox",n:"لانش بوكس أطفال بحجرات وأقفال – اختر التصميم",c:"school",cn:"ركن المدرسة",p:299,o:500,imgs:["images/p6-1.webp","images/p6-2.webp","images/p6-3.webp","images/p6-4.webp","images/p6-5.webp"],
+  {id:"kids-lunchbox",n:"لانش بوكس أطفال بحجرات وأقفال – اختر التصميم",c:"school",cn:"ركن المدرسة",p:299,o:500,imgs:IMG.p6,
    v:[{n:"Sheep – وردي",i:0},{n:"Reindeer – أخضر",i:1},{n:"Platypus – أزرق",i:2},{n:"Hippo – بنفسجي",i:3}],
    d:"لانش بوكس بتصميمات وألوان كارتونية للأطفال، بحجرات داخلية وعلبة صغيرة وشوكة وملعقة، وأقفال جانبية تحافظ على الأكل.",
    f:["4 تصميمات وألوان للاختيار","حجرات داخلية وعلبة صغيرة","شوكة وملعقة مرفقة","أقفال جانبية محكمة"],s:""}
@@ -71,7 +104,7 @@ window.DR.EN = {
 
 window.DR.GOVEN = {"القاهرة":"Cairo","الجيزة":"Giza","الإسكندرية":"Alexandria","القليوبية":"Qalyubia","الشرقية":"Sharqia","الدقهلية":"Dakahlia","البحيرة":"Beheira","الغربية":"Gharbia","المنوفية":"Monufia","كفر الشيخ":"Kafr El Sheikh","دمياط":"Damietta","بورسعيد":"Port Said","الإسماعيلية":"Ismailia","السويس":"Suez","الفيوم":"Fayoum","بني سويف":"Beni Suef","المنيا":"Minya","أسيوط":"Assiut","سوهاج":"Sohag","قنا":"Qena","الأقصر":"Luxor","أسوان":"Aswan","البحر الأحمر":"Red Sea","الوادي الجديد":"New Valley","مطروح":"Matrouh","شمال سيناء":"North Sinai","جنوب سيناء":"South Sinai"};
 
-window.DR.AREAEN = {"القاهرة":["Nasr City","Heliopolis","New Cairo","Rehab","Madinaty","El Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shobra","Ein Shams","Mataria","El Nozha","El Obour","15 May","Badr"],"الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek Al Ahram","Imbaba","Bulaq Dakrour","Omraneya","Warraq","Badrashein","Saff","Oseem"],"الإسكندرية":["Smouha","Sidi Gaber","Miami","Montaza","Agamy","Asafra","Cleopatra","Moharam Bek","Ibrahimiya","Borg El Arab","Dekheila","Abu Qir","Sidi بشر","Werdian","Karmous"],"القليوبية":["Benha","Shobra El Kheima","Qanater","Khanka","Qalyoub","Khصوص","Kafr Shukr","Toukh","Shibin El Qanater"],"الشرقية":["Zagazig","10th of Ramadan","Belbeis","Minya El Qamh","Abu Hammad","Faquq","Hehia","Diarb Negm","Abu Kebir","Husseiniya","Kafr Saqr","Mashtoul El Souq"],"الدقهلية":["Mansoura","Mit Ghamr","Talkha","Aga","Sinbillawin","Dikirnis","Sherbin","Belqas","Manzala","Gamasa"],"البحيرة":["Damanhour","Kafr El Dawwar","Rosetta","Edكو","Abu Hummus","Kom Hamada","Dallangat","Itay El Baroud","Wadi El Natrun","Shubrakhit"],"الغربية":["Tanta","El Mahalla El Kubra","Kafr El Zayat","Zefta","Santa","Basyoun","Samannoud","Qutour"],"المنوفية":["Shibin El Kom","Sadat City","Menouf","Ashmoun","Bagour","Qويسنا","Berkat El Saba","Tala","Shohada"],"كفر الشيخ":["Kafr El Sheikh","Desouk","Baltim","Fouah","Metoubes","Sidi Salem","Bela","Hamoul","Qallin","Riyadh"],"دمياط":["Damietta","New Damietta","Ras El Bar","Farsكور","Kafr Saad","Zarqa","Kafr El Batikh"],"بورسعيد":["Port Fouad","El Shark","El Arab","El Dawahy","El Manakh","El Zohour"],"الإسماعيلية":["Ismailia","Fayed","East Qantara","West Qantara","El Tall El Kebir","Abu Suwir","Qassasin"],"السويس":["Suez","Arbaeen","Ataka","Janain","Faisal"],"الفيوم":["Fayoum","Sennuris","Itsa","Tamiya","Ibshoway","Yوسف الصديق"],"بني سويف":["Beni Suef","Wasta","Naser","Ehnasia","Beba","Fashn","Samasta"],"المنيا":["Minya","Mallawi","Maghagha","Bani Mazar","Samalut","Abu Qurqas","Adwa","Matay","Deir Mawas"],"أسيوط":["Assiut","Derout","Qusiya","Abnoub","Manfalut","Abutig","Sedfa","Ghanayem","Fateh"],"سوهاج":["Sohag","Akhmim","Gerga","Tahta","Maragha","Baliana","Dar El Salam","Juhayna","Mansha"],"قنا":["Qena","Nag Hammadi","Dishna","Qus","Abul Tesht","Farshout","Naqada"],"الأقصر":["Luxor","Esna","Armant","Tod","Bayadiya","Qurna"],"أسوان":["Aswan","Kom Ombo","Edfu","Daraw","Nasr El Nuba","Abu Simbel"],"البحر الأحمر":["Hurghada","Safaga","Quseir","Marsa Alam","Ras Ghareb","El Gouna"],"الوادي الجديد":["Kharga","Dakhla","Farafra","Paris","Balat"],"مطروح":["Marsa Matrouh","El Alamein","El Hammam","Dabaa","Siwa","Nagila","Sidi Barrani"],"شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasana","Nakhl"],"جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"};
+window.DR.AREAEN = {"القاهرة":["Nasr City","Heliopolis","New Cairo","Rehab","Madinaty","El Shorouk","Maadi","Helwan","Mokattam","Downtown","Zamalek","Shobra","Ein Shams","Mataria","El Nozha","El Obour","15 May","Badr"],"الجيزة":["Dokki","Mohandessin","Agouza","Haram","Faisal","6th of October","Sheikh Zayed","Hadayek Al Ahram","Imbaba","Bulaq Dakrour","Omraneya","Warraq","Badrashein","Saff","Oseem"],"الإسكندرية":["Smouha","Sidi Gaber","Miami","Montaza","Agamy","Asafra","Cleopatra","Moharam Bek","Ibrahimiya","Borg El Arab","Dekheila","Abu Qir","Sidi Bishr","Werdian","Karmous"],"القليوبية":["Benha","Shobra El Kheima","Qanater","Khanka","Qalyoub","Khصوص","Kafr Shukr","Toukh","Shibin El Qanater"],"الشرقية":["Zagazig","10th of Ramadan","Belbeis","Minya El Qamh","Abu Hammad","Faquq","Hehia","Diarb Negm","Abu Kebir","Husseiniya","Kafr Saqr","Mashtoul El Souq"],"الدقهلية":["Mansoura","Mit Ghamr","Talkha","Aga","Sinbillawin","Dikirnis","Sherbin","Belqas","Manzala","Gamasa"],"البحيرة":["Damanhour","Kafr El Dawwar","Rosetta","Edku","Abu Hummus","Kom Hamada","Dallangat","Itay El Baroud","Wadi El Natrun","Shubrakhit"],"الغربية":["Tanta","El Mahalla El Kubra","Kafr El Zayat","Zefta","Santa","Basyoun","Samannoud","Qutour"],"المنوفية":["Shibin El Kom","Sadat City","Menouf","Ashmoun","Bagour","Quesna","Berkat El Saba","Tala","Shohada"],"كفر الشيخ":["Kafr El Sheikh","Desouk","Baltim","Fouah","Metoubes","Sidi Salem","Bela","Hamoul","Qallin","Riyadh"],"دمياط":["Damietta","New Damietta","Ras El Bar","Farskur","Kafr Saad","Zarqa","Kafr El Batikh"],"بورسعيد":["Port Fouad","El Shark","El Arab","El Dawahy","El Manakh","El Zohour"],"الإسماعيلية":["Ismailia","Fayed","East Qantara","West Qantara","El Tall El Kebir","Abu Suwir","Qassasin"],"السويس":["Suez","Arbaeen","Ataka","Janain","Faisal"],"الفيوم":["Fayoum","Sennuris","Itsa","Tamiya","Ibshoway","Yousef El Sedeek"],"بني سويف":["Beni Suef","Wasta","Naser","Ehnasia","Beba","Fashn","Samasta"],"المنيا":["Minya","Mallawi","Maghagha","Bani Mazar","Samalut","Abu Qurqas","Adwa","Matay","Deir Mawas"],"أسيوط":["Assiut","Derout","Qusiya","Abnoub","Manfalut","Abutig","Sedfa","Ghanayem","Fateh"],"سوهاج":["Sohag","Akhmim","Gerga","Tahta","Maragha","Baliana","Dar El Salam","Juhayna","Mansha"],"قنا":["Qena","Nag Hammadi","Dishna","Qus","Abul Tesht","Farshout","Naqada"],"الأقصر":["Luxor","Esna","Armant","Tod","Bayadiya","Qurna"],"أسوان":["Aswan","Kom Ombo","Edfu","Daraw","Nasr El Nuba","Abu Simbel"],"البحر الأحمر":["Hurghada","Safaga","Quseir","Marsa Alam","Ras Ghareb","El Gouna"],"الوادي الجديد":["Kharga","Dakhla","Farafra","Paris","Balat"],"مطروح":["Marsa Matrouh","El Alamein","El Hammam","Dabaa","Siwa","Nagila","Sidi Barrani"],"شمال سيناء":["Arish","Sheikh Zuweid","Rafah","Bir El Abd","Hasana","Nakhl"],"جنوب سيناء":["Sharm El Sheikh","Dahab","Nuweiba","Taba","El Tor","Saint Catherine","Ras Sedr"]};
 
 window.DR.SB = {
   URL: "https://mpinhsjvkcqcmebiwqmb.supabase.co",
@@ -112,7 +145,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
 
   var S = function(){ try{return JSON.parse(localStorage.getItem("dr_sess")||sessionStorage.getItem("dr_sess")||"null")}catch(e){return null} };
   var put = function(s){ try{localStorage.removeItem("dr_sess");sessionStorage.removeItem("dr_sess");(s.rem?localStorage:sessionStorage).setItem("dr_sess",JSON.stringify(s))}catch(e){} };
-  
+
   var api = function(p,o,tk){
     o=o||{};var h={apikey:window.DR.SB.KEY,"Content-Type":"application/json",Authorization:"Bearer "+(tk||window.DR.SB.KEY)};
     for(var k in (o.h||{}))h[k]=o.h[k];
@@ -138,7 +171,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
   };
 
   var dg = function(x){ return String(x).replace(/\D/g,"").slice(-10); };
-  
+
   window.DR.login = function(e,p,rem){
     e=e.trim().toLowerCase();
     if(e.indexOf("@")<0){
@@ -159,7 +192,7 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
 
   window.DR.google = function(){
     if(!window.DR.cloud())return Promise.reject(new Error("NOCLOUD"));
-    location.href=window.DR.SB.URL+"/auth/v1/authorize?provider=google&redirect_to="+encodeURIComponent("https://dorg-raf.vercel.app");
+    location.href=window.DR.SB.URL+"/auth/v1/authorize?provider=google&redirect_to="+encodeURIComponent(location.origin+location.pathname);
     return new Promise(function(){});
   };
 
@@ -223,20 +256,4 @@ window.DR.cloud = function() { return !!(window.DR.SB.URL && window.DR.SB.KEY); 
           var ord = (res && res.length > 0 && res[0].data) ? res[0].data : {};
           ord.status = st;
           sendEmailNotification(ord, st);
-          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b:{status:st, data: ord}},tk);
-        });
-      });
-    }
-    var a=window.DR.orders();var targetOrder=null;
-    a.forEach(function(o){if(o.id==id){o.status=st;targetOrder=o;}});
-    window.DR.save(a);
-    if(targetOrder) sendEmailNotification(targetOrder, st);
-    return Promise.resolve();
-  };
-
-  window.DR.delOrder = function(id){
-    if(window.DR.cloud()) return window.DR.token().then(function(tk){return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"DELETE",h:{Prefer:"return=minimal"}},tk)});
-    window.DR.save(window.DR.orders().filter(function(o){return o.id!=id}));
-    return Promise.resolve();
-  };
-})();
+          return api("/rest/v1/orders?id=eq."+encodeURIComponent(id),{m:"PATCH",h:{Prefer:"return=minimal"},b
